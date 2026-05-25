@@ -97,7 +97,7 @@
         .hero {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 7rem 2rem 4rem 2rem;
+            padding: 6rem 2rem 4rem 2rem;
             text-align: center;
             display: flex;
             flex-direction: column;
@@ -123,7 +123,49 @@
             font-size: 1.2rem;
             color: var(--text-muted);
             max-width: 650px;
-            margin-bottom: 3.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        /* New Search Component Interface */
+        .search-container {
+            width: 100%;
+            max-width: 750px;
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-input {
+            flex: 1;
+            background: rgba(31, 41, 55, 0.5);
+            border: 1px solid var(--border-color);
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent-color);
+            background: rgba(31, 41, 55, 0.8);
+        }
+
+        .search-btn {
+            background: var(--accent-color);
+            color: #fff;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: background 0.2s;
+        }
+
+        .search-btn:hover {
+            background: #4f46e5;
         }
 
         /* Dynamic Interactive Terminal */
@@ -175,19 +217,28 @@
             padding: 1.75rem;
             font-family: 'Fira Code', 'Courier New', monospace;
             font-size: 0.95rem;
-            min-height: 220px;
+            min-height: 250px;
+            max-height: 400px;
+            overflow-y: auto;
         }
 
         .line {
             margin-bottom: 0.75rem;
             display: flex;
+            flex-direction: column;
             align-items: flex-start;
+        }
+
+        .prompt-header {
+            display: flex;
+            align-items: center;
         }
 
         .prompt-symbol {
             color: var(--accent-color);
             margin-right: 10px;
             user-select: none;
+            font-weight: bold;
         }
 
         .cmd-text {
@@ -198,26 +249,9 @@
             color: #34d399;
             padding-left: 20px;
             margin-top: 0.25rem;
-            margin-bottom: 1rem;
-        }
-
-        /* Interactive Input inside Terminal */
-        .terminal-input-row {
-            display: flex;
-            align-items: center;
-            margin-top: 1rem;
-            border-top: 1px solid rgba(255,255,255,0.05);
-            padding-top: 1rem;
-        }
-
-        .terminal-input-row input {
-            background: transparent;
-            border: none;
-            color: #38bdf8;
-            font-family: monospace;
-            font-size: 0.95rem;
-            width: 100%;
-            outline: none;
+            margin-bottom: 0.75rem;
+            white-space: pre-line;
+            line-height: 1.5;
         }
 
         /* Grid System */
@@ -348,28 +382,12 @@
             border-top: 1px solid rgba(255,255,255,0.02);
         }
 
-        /* Cursor Animation */
-        .cursor {
-            display: inline-block;
-            width: 8px;
-            height: 15px;
-            background: #fff;
-            margin-left: 4px;
-            animation: flash 1s infinite;
-            vertical-align: middle;
-        }
-
-        @keyframes flash {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-
-        /* Responsive Fixes */
         @media (max-width: 768px) {
             .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
             .hero h1 { font-size: 2.6rem; }
             nav { padding: 1.25rem 5%; }
-            .nav-links { display: none; } /* Mobile simplicity */
+            .nav-links { display: none; }
+            .search-container { flex-direction: column; }
         }
     </style>
 </head>
@@ -388,6 +406,11 @@
         <h1>Autonomous System Framework<br><span>ASK-NOVA Agent</span></h1>
         <p>A computational execution entity built to interact dynamically with complex code structures, process multi-layered contextual prompts, and automate workflows natively inside GitHub ecosystems.</p>
 
+        <div class="search-container">
+            <input type="text" id="search-field" class="search-input" placeholder="Search a topic (e.g., html, css, javascript, ai)...">
+            <button id="search-action-btn" class="search-btn">Query Agent</button>
+        </div>
+
         <div class="terminal">
             <div class="terminal-header">
                 <div class="dots">
@@ -397,14 +420,8 @@
                 </div>
                 <div class="terminal-title">nova-core://agent-terminal</div>
             </div>
-            <div class="terminal-body">
-                <div id="terminal-history">
-                    </div>
-                <div class="terminal-input-row">
-                    <span class="prompt-symbol">nova@user:~$</span>
-                    <input type="text" id="user-terminal-input" placeholder="Type custom command (e.g., 'help', 'status') & press Enter..." autocomplete="off">
+            <div class="terminal-body" id="terminal-history">
                 </div>
-            </div>
         </div>
     </main>
 
@@ -455,16 +472,27 @@
 
     <script>
         const historyContainer = document.getElementById('terminal-history');
-        const userInput = document.getElementById('user-terminal-input');
+        const searchField = document.getElementById('search-field');
+        const searchActionBtn = document.getElementById('search-action-btn');
+
+        // Professional Knowledge Database (Safe, factual, and constructive definitions)
+        const topicDatabase = {
+            "html": "📌 HTML (HyperText Markup Language):\nThe standard structural foundation of web pages. It elements define headings, paragraphs, links, and structure panels across web designs.",
+            "css": "📌 CSS (Cascading Style Sheets):\nThe presentation engine used to design layout presentation. It handles colors, spacing, typography, responsiveness, and aesthetic custom variables.",
+            "javascript": "📌 JavaScript:\nA high-level scripting language enabling dynamic logic on the client side. It runs terminal computations, structural animations, and interactive event triggers.",
+            "js": "📌 JavaScript:\nA high-level scripting language enabling dynamic logic on the client side. It runs terminal computations, structural animations, and interactive event triggers.",
+            "ai": "📌 Artificial Intelligence (AI):\nThe engineering methodology behind simulating intelligent computational logic processing. It streamlines data discovery frameworks and structural automation tasks seamlessly.",
+            "git": "📌 Git:\nA decentralized version management system tracking file modification matrices across collective development teams to ensure collaborative project integrity.",
+            "bca": "📌 BCA (Bachelor of Computer Applications):\nA structured undergraduate degree pathway designed to educate students in foundational programming languages, database structures, web engineering, and system development portfolios."
+        };
 
         // Automatic Intro Simulation Sequence
         const scriptSequence = [
-            { cmd: "initialize ask-nova --core", delay: 400 },
-            { output: "⚙ Booting Nova Agent Kernel Core v2.4.1...", delay: 800 },
-            { cmd: "ask-nova --check-status", delay: 1400 },
-            { output: "🟢 Status: Online | Core Temperature: Stable | Node Connection: Secure", delay: 1800 },
-            { cmd: "ask-nova --developer-info", delay: 2400 },
-            { output: "👤 Developer verified: Pratham Dada [BCA Student Framework Architect]", delay: 2800 }
+            { cmd: "initialize ask-nova --core", delay: 300 },
+            { output: "⚙ Booting Nova Agent Kernel Core v2.4.1...", delay: 600 },
+            { cmd: "ask-nova --check-status", delay: 1000 },
+            { output: "🟢 Status: Online | Core System Architecture: Secure", delay: 1300 },
+            { output: "💡 Knowledge Base Ready. Use the Search Bar above to query educational parameters.", delay: 1600 }
         ];
 
         // Function to safely print lines to terminal
@@ -473,7 +501,7 @@
             line.className = 'line';
             
             if (isCommand) {
-                line.innerHTML = `<span class="prompt-symbol">nova@system:~$</span><span class="cmd-text">${text}</span>`;
+                line.innerHTML = `<div class="prompt-header"><span class="prompt-symbol">nova@search-engine:~$</span><span class="cmd-text">${text}</span></div>`;
             } else {
                 line.innerHTML = `<span class="output-text">${text}</span>`;
             }
@@ -492,38 +520,32 @@
             }, step.delay);
         });
 
-        // Event listener for custom user interaction inputs
-        userInput.addEventListener('keydown', function(e) {
+        // Search Execution Handler Logic
+        function executeSearchQuery() {
+            const query = searchField.value.trim().toLowerCase();
+            if (!query) return;
+
+            // Log query inside the terminal visual wrapper safely
+            appendTerminalLine(`search --topic "${searchField.value}"`, true);
+
+            setTimeout(() => {
+                // Return exact matched topics or friendly standardized fallback instructions
+                if (topicDatabase[query]) {
+                    appendTerminalLine(topicDatabase[query]);
+                } else {
+                    appendTerminalLine(`ℹ️ Query reference complete. Topic insight for '${searchField.value}' not mapped natively. \nTry searching: HTML, CSS, JavaScript, Git, or AI for general educational definitions.`);
+                }
+            }, 250);
+
+            // Clean the input box layout
+            searchField.value = '';
+        }
+
+        // Connect button and enter keys to trigger the search query safely
+        searchActionBtn.addEventListener('click', executeSearchQuery);
+        searchField.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
-                const query = userInput.value.trim().toLowerCase();
-                if (!query) return;
-
-                // Echo the user input back into terminal
-                const userLine = document.createElement('div');
-                userLine.className = 'line';
-                userLine.innerHTML = `<span class="prompt-symbol">nova@user:~$</span><span class="cmd-text" style="color: #38bdf8;">${userInput.value}</span>`;
-                historyContainer.appendChild(userLine);
-
-                // Basic mock response module logic
-                setTimeout(() => {
-                    if (query === 'help') {
-                        appendTerminalLine("Available triggers: 'status' | 'about' | 'clear' | 'version'");
-                    } else if (query === 'status') {
-                        appendTerminalLine("🟢 System running smoothly. All pipeline hooks responding within optimal thresholds (14ms).");
-                    } else if (query === 'about') {
-                        appendTerminalLine("🤖 ASK-NOVA is an AI development layout built by Pratham Dada, a dedicated student pursuing a Bachelor of Computer Applications.");
-                    } else if (query === 'clear') {
-                        historyContainer.innerHTML = '';
-                        appendTerminalLine("Terminal output cleared successfully.");
-                    } else if (query === 'version') {
-                        appendTerminalLine("ASK-NOVA Core Edition v2.4.1 (Stable Release build-2026).");
-                    } else {
-                        appendTerminalLine(`⚠️ Command error: '${query}' not parsed natively. Type 'help' for instructions.`);
-                    }
-                }, 300);
-
-                // Reset input element
-                userInput.value = '';
+                executeSearchQuery();
             }
         });
     </script>
