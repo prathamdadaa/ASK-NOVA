@@ -29,21 +29,29 @@
             color: var(--text-color);
             line-height: 1.6;
             overflow-x: hidden;
+            width: 100%;
         }
 
-        /* Hero Wrapper */
-        .hero {
-            max-width: 1200px;
+        /* Fluid Layout Utility Wrapper */
+        .container-fluid {
+            width: 100%;
+            max-width: 1100px;
             margin: 0 auto;
-            padding: 6rem 2rem 3rem 2rem;
+            padding: 0 1.5rem;
+        }
+
+        /* Hero Header Adjustment Matrix */
+        .hero {
+            padding: 6rem 1.5rem 2.5rem 1.5rem;
             text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
+            width: 100%;
         }
 
         .hero h1 {
-            font-size: 3.8rem;
+            font-size: clamp(2.2rem, 5vw, 3.8rem); /* Scale perfectly based on view size */
             font-weight: 800;
             margin-bottom: 1.5rem;
             color: #fff;
@@ -58,13 +66,14 @@
         }
 
         .hero p {
-            font-size: 1.2rem;
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
             color: var(--text-muted);
             max-width: 650px;
             margin-bottom: 2.5rem;
+            padding: 0 0.5rem;
         }
 
-        /* Search Component Interface */
+        /* Search Layout Engine Component */
         .search-container {
             width: 100%;
             max-width: 750px;
@@ -83,6 +92,7 @@
             font-size: 1rem;
             outline: none;
             transition: border-color 0.3s;
+            width: 100%;
         }
 
         .search-input:focus {
@@ -100,13 +110,14 @@
             cursor: pointer;
             font-size: 0.95rem;
             transition: background 0.2s;
+            white-space: nowrap;
         }
 
         .search-btn:hover {
             background: #4f46e5;
         }
 
-        /* Dynamic Interactive Terminal */
+        /* Responsive Simulated Terminal Node */
         .terminal {
             width: 100%;
             max-width: 750px;
@@ -116,7 +127,7 @@
             overflow: hidden;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
             text-align: left;
-            margin-bottom: 3rem;
+            margin-bottom: 2.5rem;
         }
 
         .terminal-header {
@@ -144,9 +155,9 @@
         }
 
         .terminal-body {
-            padding: 1.75rem;
+            padding: 1.5rem;
             font-family: 'Fira Code', 'Courier New', monospace;
-            font-size: 0.95rem;
+            font-size: clamp(0.85rem, 2vw, 0.95rem);
             min-height: 180px;
             max-height: 280px;
             overflow-y: auto;
@@ -159,12 +170,12 @@
             align-items: flex-start;
         }
 
-        .prompt-header { display: flex; align-items: center; }
+        .prompt-header { display: flex; align-items: center; flex-wrap: wrap; }
         .prompt-symbol { color: var(--accent-color); margin-right: 10px; user-select: none; font-weight: bold; }
-        .cmd-text { color: #fff; }
-        .output-text { color: #34d399; padding-left: 20px; margin-top: 0.25rem; margin-bottom: 0.75rem; white-space: pre-line; line-height: 1.5; }
+        .cmd-text { color: #fff; word-break: break-all; }
+        .output-text { color: #34d399; padding-left: 15px; margin-top: 0.25rem; margin-bottom: 0.75rem; white-space: pre-line; line-height: 1.5; word-break: break-word; }
 
-        /* ALL-IN-ONE COMPILER SYSTEM STYLING */
+        /* Responsive Compiler Component Box Layer */
         .compiler-container {
             width: 100%;
             max-width: 750px;
@@ -174,7 +185,7 @@
             overflow: hidden;
             box-shadow: 0 20px 40px rgba(0,0,0,0.5);
             text-align: left;
-            margin-bottom: 4rem;
+            margin-bottom: 3.5rem;
         }
 
         .compiler-controls {
@@ -184,6 +195,8 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .compiler-title-text {
@@ -206,17 +219,19 @@
 
         .compiler-iframe {
             width: 100%;
-            height: 480px;
+            height: clamp(380px, 50vh, 480px); /* Adjust compiler height adaptively */
             border: none;
             display: block;
             background: #1e1e1e;
         }
 
-        /* Navigation shortcut bar */
+        /* Flexible Fluid Navigation Shortcuts */
         .shortcut-bar {
             display: flex;
             gap: 15px;
-            margin-bottom: 5rem;
+            margin-bottom: 4rem;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         .shortcut-link {
@@ -226,18 +241,17 @@
             font-weight: 600;
             border-bottom: 1px dashed var(--accent-color);
             transition: color 0.2s;
+            padding: 0.2rem 0;
         }
         .shortcut-link:hover { color: #fff; border-bottom-color: #fff; }
 
-        /* Course Matrix Dashboard Section */
+        /* Course and Resource Layout Grids */
         .resources-section {
-            max-width: 1100px;
-            margin: 0 auto 6rem auto;
-            padding: 0 2rem;
+            padding: 4rem 0;
         }
 
         .section-title {
-            font-size: 2rem;
+            font-size: clamp(1.6rem, 4vw, 2rem);
             font-weight: 800;
             margin-bottom: 2.5rem;
             text-align: center;
@@ -249,15 +263,15 @@
 
         .resource-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            gap: 1.75rem;
         }
 
         .resource-card {
             background: rgba(31, 41, 55, 0.3);
             border: 1px solid var(--border-color);
             border-radius: 12px;
-            padding: 2rem;
+            padding: 1.75rem;
             transition: all 0.3s ease;
         }
 
@@ -269,7 +283,7 @@
 
         .resource-card h3 {
             color: #fff;
-            font-size: 1.3rem;
+            font-size: 1.25rem;
             margin-bottom: 1.25rem;
             display: flex;
             align-items: center;
@@ -282,13 +296,18 @@
             list-style: none;
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 1.1rem;
         }
 
         .course-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 10px;
+        }
+
+        .course-info {
+            flex: 1;
         }
 
         .course-info h4 {
@@ -312,6 +331,7 @@
             border-radius: 6px;
             border: 1px solid rgba(99, 102, 241, 0.3);
             transition: all 0.2s;
+            text-align: center;
         }
 
         .study-btn:hover {
@@ -320,25 +340,22 @@
             border-color: var(--accent-color);
         }
 
-        /* Profile/About Layout with Photo Box Integration */
+        /* Fully Adaptive Fluid Layout Architecture Profile */
         .about-section {
             background: #0b0f19;
             border-top: 1px solid var(--border-color);
             border-bottom: 1px solid var(--border-color);
-            padding: 6rem 2rem;
-        }
-
-        .about-container {
-            max-width: 1100px;
-            margin: 0 auto;
+            padding: 5rem 0;
+            width: 100%;
         }
 
         .about-header {
-            margin-bottom: 3.5rem;
+            margin-bottom: 3rem;
+            text-align: center;
         }
 
         .about-header h2 {
-            font-size: 2.4rem;
+            font-size: clamp(1.8rem, 4vw, 2.4rem);
             color: #fff;
             margin-bottom: 0.5rem;
         }
@@ -352,19 +369,21 @@
 
         .about-grid {
             display: grid;
-            grid-template-columns: 280px 1.2fr 1fr;
-            gap: 2.5rem;
+            grid-template-columns: 260px 1.2fr 1fr;
+            gap: 2rem;
             align-items: start;
         }
 
-        /* Photo Component Styling */
+        /* Device-Responsive Photo Container Frame Matrix */
         .profile-photo-wrapper {
             width: 100%;
+            max-width: 260px;
             background: var(--terminal-bg);
             border: 1px solid var(--border-color);
             border-radius: 12px;
             padding: 10px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            margin: 0 auto;
         }
 
         .profile-image {
@@ -390,8 +409,9 @@
         .skills-panel {
             background: var(--terminal-bg);
             border: 1px solid var(--border-color);
-            padding: 2rem;
+            padding: 1.75rem;
             border-radius: 10px;
+            width: 100%;
         }
 
         .skills-panel h4 {
@@ -411,7 +431,7 @@
         .badge {
             background: rgba(99, 102, 241, 0.08);
             color: #a5b4fc;
-            padding: 0.4rem 0.9rem;
+            padding: 0.4rem 0.8rem;
             border-radius: 6px;
             font-size: 0.85rem;
             font-weight: 500;
@@ -420,24 +440,55 @@
 
         footer {
             text-align: center;
-            padding: 4rem 2rem;
+            padding: 4rem 1.5rem;
             color: #4b5563;
             font-size: 0.9rem;
             border-top: 1px solid rgba(255,255,255,0.02);
+            width: 100%;
         }
 
+        /* DEVICE SCREEN BREAKPOINT ADAPTATION MATRIX */
         @media (max-width: 992px) {
-            .about-grid { grid-template-columns: 1fr; gap: 2.5rem; justify-items: center; text-align: center; }
-            .profile-photo-wrapper { max-width: 280px; }
-            .hero h1 { font-size: 2.6rem; }
-            .search-container { flex-direction: column; }
-            .shortcut-bar { flex-wrap: wrap; justify-content: center; }
+            .about-grid {
+                grid-template-columns: 1fr; /* Stack into clean single column layout on tablets */
+                gap: 2.5rem;
+            }
+            .about-header, .bio-content {
+                text-align: center;
+            }
+            .stack-group {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .search-container {
+                flex-direction: column; /* Stack search input and button neatly on mobile screens */
+                gap: 12px;
+            }
+            .search-btn {
+                width: 100%;
+                padding: 0.8rem;
+            }
+            .hero {
+                padding-top: 4rem;
+            }
+            .resource-grid {
+                grid-template-columns: 1fr; /* Single column card stacks on small mobile viewports */
+            }
+            .compiler-controls {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .lang-select {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
 
-    <main class="hero">
+    <main class="hero container-fluid">
         <h1>Autonomous System Framework<br><span>ASK-NOVA Agent</span></h1>
         <p>A computational execution entity built to interact dynamically with complex code structures, process multi-layered contextual prompts, and serve study resources for tech students.</p>
 
@@ -479,7 +530,7 @@
         </div>
     </main>
 
-    <section id="courses" class="resources-section">
+    <section id="courses" class="container-fluid resources-section">
         <h2 class="section-title">Free <span>Educational Courses</span></h2>
         <div class="resource-grid">
             
@@ -546,7 +597,7 @@
         </div>
     </section>
 
-    <section id="materials" class="resources-section" style="border-top: 1px solid var(--border-color); padding-top: 5rem;">
+    <section id="materials" class="container-fluid resources-section" style="border-top: 1px solid var(--border-color);">
         <h2 class="section-title">BCA <span>Academic Reference Materials</span></h2>
         <div class="resource-grid">
 
@@ -614,13 +665,13 @@
     </section>
 
     <section id="about" class="about-section">
-        <div class="about-container">
+        <div class="container-fluid about-container">
             <div class="about-header">
                 <h2>System Architecture</h2>
                 <p>PROJECT ORIGIN & DEVELOPER OVERVIEW</p>
             </div>
+            
             <div class="about-grid">
-                
                 <div class="profile-photo-wrapper">
                     <img src="your-photo.jpg" alt="Pratham Dada" class="profile-image">
                 </div>
@@ -629,6 +680,7 @@
                     <p><strong>ASK-NOVA</strong> represents an exploration into autonomous logic processing systems. It is structured to handle tasks programmatically without sacrificing clarity or code safety layout paradigms.</p>
                     <p>This software concept and layout is designed, engineered, and maintained by <strong>Pratham Dada</strong>, an aspiring <strong>BCA (Bachelor of Computer Applications)</strong> student deep-diving into modern application architectures, logic pipelines, and semantic script building blocks.</p>
                 </div>
+
                 <div class="skills-panel">
                     <h4>Technical Competencies</h4>
                     <div class="stack-group">
@@ -654,7 +706,6 @@
         const searchActionBtn = document.getElementById('search-action-btn');
         const compilerFrame = document.getElementById('compiler-frame');
 
-        // Dynamic Source Engine URL Map for Safe Compilers
         const compilerURLs = {
             "python": "https://gdbgui.com/embed/python3?theme=dark",
             "c": "https://gdbgui.com/embed/c?theme=dark",
@@ -671,15 +722,15 @@
         }
 
         const topicDatabase = {
-            "html": "📌 HTML (HyperText Markup Language):\nThe standard structural foundation of web pages. Check out the Frontend panel below for the full FreeCodeCamp roadmap link.",
+            "html": "📌 HTML (HyperText Markup Language):\nThe standard structural foundation of web pages. Check out the Frontend panel below for the roadmap links.",
             "css": "📌 CSS (Cascading Style Sheets):\nThe presentation engine used to design layouts. Handles colors, typography, responsiveness, and dark-mode variables.",
             "javascript": "📌 JavaScript:\nA high-level scripting language enabling dynamic interactive event triggers. Essential core foundation for modern web engineering.",
             "js": "📌 JavaScript:\nA high-level scripting language enabling dynamic interactive event triggers. Essential core foundation for modern web engineering.",
             "python": "📌 Python Language:\nHighly readable programming language perfect for software development, scripting, data engineering, and artificial intelligence prototyping.",
-            "c": "📌 C Programming:\nThe structural mother of modern languages. Offers foundational understanding of execution loops, compilation pipelines, and explicit memory layout management.",
-            "c++": "📌 C++ Language:\nAn extension of C implementing Object-Oriented Programming (OOP) architectures. Broadly utilized in high-performance application design and system compilation architectures.",
+            "c": "📌 C Programming:\nThe structural mother of modern languages. Offers foundational understanding of execution loops, compilation pipelines, and explicit memory layouts.",
+            "c++": "📌 C++ Language:\nAn extension of C implementing Object-Oriented Programming (OOP) architectures. Broadly utilized in high-performance application design.",
             "typescript": "📌 TypeScript:\nA strict syntactic superset of JavaScript adding static type interfaces to drop production compile-time anomalies safely.",
-            "dsa": "📌 Data Structures & Algorithms (DSA):\nThe core framework of programming optimization. Includes Linked Lists, Trees, Graphs, Sorting algorithms, and algorithmic complexity tracking.",
+            "dsa": "📌 Data Structures & Algorithms (DSA):\nThe core framework of programming optimization. Includes Linked Lists, Trees, Graphs, Sorting algorithms, and complexity tracking.",
             "ai": "📌 Artificial Intelligence (AI):\nThe engineering methodology behind simulating intelligent computational logic processing. It streamlines data discovery frameworks and structural automation tasks seamlessly.",
             "bca": "📌 BCA (Bachelor of Computer Applications):\nA structured undergraduate degree pathway designed to educate students in foundational programming languages, database structures, web engineering, and system development portfolios."
         };
@@ -687,8 +738,8 @@
         const scriptSequence = [
             { cmd: "initialize ask-nova --core", delay: 300 },
             { output: "⚙ Booting Nova Agent Kernel Core v2.4.1...", delay: 600 },
-            { cmd: "ask-nova --load-compiler-sandbox", delay: 1000 },
-            { output: "🚀 Compiler Active: Multi-language programming terminal container is operational right below.", delay: 1300 }
+            { cmd: "ask-nova --load-responsive-grid", delay: 1000 },
+            { output: "🚀 Responsive alignment fixed across all viewports. Desktop, tablet, and mobile configurations active.", delay: 1300 }
         ];
 
         function appendTerminalLine(text, isCommand = false) {
