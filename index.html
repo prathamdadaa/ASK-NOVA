@@ -1,402 +1,531 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ASK NOVA- Search & Discover</title>
-  <style>
-    /* Reset and Core Styles */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASK-NOVA | Next-Gen AI Agent</title>
+    <style>
+        :root {
+            --bg-color: #030712;
+            --text-color: #f3f4f6;
+            --text-muted: #9ca3af;
+            --accent-color: #6366f1;
+            --accent-glow: rgba(99, 102, 241, 0.3);
+            --card-bg: #1f2937;
+            --border-color: #374151;
+            --terminal-bg: #111827;
+        }
 
-    body {
-      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-      min-height: 100vh;
-      color: #333;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            scroll-behavior: smooth;
+        }
 
-    /* Navigation Bar */
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 8%;
-      background: transparent;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
 
-    .logo {
-      font-size: 24px;
-      font-weight: 800;
-      color: #4f46e5;
-      text-decoration: none;
-    }
+        /* Navbar Layout */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 8%;
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(3, 7, 18, 0.85);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
 
-    /* Navigation Tabs Container */
-    .nav-tabs {
-      list-style: none;
-      display: flex;
-      gap: 10px;
-    }
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            color: #fff;
+        }
 
-    /* Tab Buttons Styling */
-    .tab-btn {
-      text-decoration: none;
-      color: #4b5563;
-      font-weight: 600;
-      font-size: 16px;
-      padding: 8px 16px;
-      border: none;
-      background: none;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      border-radius: 6px;
-    }
+        .logo span {
+            color: var(--accent-color);
+            text-shadow: 0 0 15px var(--accent-glow);
+        }
 
-    .tab-btn:hover {
-      color: #4f46e5;
-      background-color: rgba(79, 70, 229, 0.05);
-    }
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
 
-    /* Active Tab State */
-    .tab-btn.active {
-      color: white;
-      background-color: #4f46e5;
-    }
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
 
-    .cta-btn {
-      background-color: #4f46e5;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: 600;
-      transition: background 0.3s ease;
-    }
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
 
-    .cta-btn:hover {
-      background-color: #4338ca;
-    }
+        .btn-git {
+            background: rgba(99, 102, 241, 0.1);
+            color: #fff;
+            border: 1px solid var(--accent-color);
+            padding: 0.6rem 1.4rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-    /* Page Content Sections (Hidden by Default) */
-    .page-content {
-      display: none;
-      max-width: 1000px;
-      margin: 60px auto;
-      padding: 0 20px;
-      animation: fadeIn 0.4s ease forwards;
-    }
+        .btn-git:hover {
+            background: var(--accent-color);
+            box-shadow: 0 0 20px var(--accent-glow);
+            transform: translateY(-1px);
+        }
 
-    /* Show Active Page Content */
-    .page-content.active {
-      display: block;
-    }
+        /* Hero Wrapper */
+        .hero {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 7rem 2rem 4rem 2rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+        .hero h1 {
+            font-size: 3.8rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            color: #fff;
+            letter-spacing: -1px;
+            line-height: 1.15;
+        }
 
-    /* Home / Search Layout Specifics */
-    .hero-container {
-      max-width: 800px;
-      margin: 40px auto 0 auto;
-      text-align: center;
-    }
+        .hero h1 span {
+            background: linear-gradient(135deg, #a5b4fc 0%, var(--accent-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-    .hero-container h1 {
-      font-size: 48px;
-      font-weight: 800;
-      line-height: 1.2;
-      color: #1f2937;
-      margin-bottom: 20px;
-    }
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 650px;
+            margin-bottom: 3.5rem;
+        }
 
-    .hero-container h1 span {
-      color: #4f46e5;
-    }
+        /* Dynamic Interactive Terminal */
+        .terminal {
+            width: 100%;
+            max-width: 750px;
+            background: var(--terminal-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            text-align: left;
+            margin-bottom: 6rem;
+        }
 
-    .hero-container p {
-      font-size: 18px;
-      color: #6b7280;
-      margin-bottom: 40px;
-    }
+        .terminal-header {
+            background: #1f2937;
+            padding: 0.85rem 1.25rem;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
 
-    /* Search Bar Box component */
-    .search-wrapper {
-      background: white;
-      padding: 6px;
-      border-radius: 50px;
-      display: flex;
-      align-items: center;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-      max-width: 600px;
-      margin: 0 auto 25px auto;
-      border: 1px solid rgba(0, 0, 0, 0.05);
-      transition: box-shadow 0.3s ease, transform 0.3s ease;
-    }
+        .dots {
+            display: flex;
+            gap: 7px;
+        }
 
-    .search-wrapper:focus-within {
-      box-shadow: 0 10px 30px rgba(79, 70, 229, 0.15);
-      transform: translateY(-2px);
-    }
+        .dot {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+        }
+        .dot-r { background: #ef4444; }
+        .dot-y { background: #f59e0b; }
+        .dot-g { background: #10b981; }
 
-    .search-icon {
-      margin-left: 20px;
-      margin-right: 10px;
-      width: 16px;
-      height: 16px;
-      border: 2px solid #9ca3af;
-      border-radius: 50%;
-      position: relative;
-    }
-    .search-icon::after {
-      content: '';
-      position: absolute;
-      width: 2px;
-      height: 8px;
-      background: #9ca3af;
-      transform: rotate(-45deg);
-      bottom: -6px;
-      right: -3px;
-    }
+        .terminal-title {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            margin-auto: auto;
+            font-family: monospace;
+            width: 100%;
+            text-align: center;
+            padding-right: 35px;
+        }
 
-    .search-input {
-      border: none;
-      outline: none;
-      width: 100%;
-      padding: 12px 10px;
-      font-size: 16px;
-      color: #1f2937;
-    }
+        .terminal-body {
+            padding: 1.75rem;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            font-size: 0.95rem;
+            min-height: 220px;
+        }
 
-    .search-submit-btn {
-      background-color: #4f46e5;
-      color: white;
-      border: none;
-      padding: 12px 28px;
-      border-radius: 50px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s ease;
-    }
+        .line {
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: flex-start;
+        }
 
-    .search-submit-btn:hover {
-      background-color: #4338ca;
-    }
+        .prompt-symbol {
+            color: var(--accent-color);
+            margin-right: 10px;
+            user-select: none;
+        }
 
-    .trending-tags {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 12px;
-      font-size: 14px;
-      color: #6b7280;
-    }
+        .cmd-text {
+            color: #fff;
+        }
 
-    .tag {
-      background: rgba(255, 255, 255, 0.6);
-      padding: 4px 12px;
-      border-radius: 20px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      border: 1px solid transparent;
-    }
+        .output-text {
+            color: #34d399;
+            padding-left: 20px;
+            margin-top: 0.25rem;
+            margin-bottom: 1rem;
+        }
 
-    .tag:hover {
-      background: white;
-      border-color: #4f46e5;
-      color: #4f46e5;
-    }
+        /* Interactive Input inside Terminal */
+        .terminal-input-row {
+            display: flex;
+            align-items: center;
+            margin-top: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding-top: 1rem;
+        }
 
-    /* Inner Page Presentation Layouts (Features & Pricing) */
-    .page-card {
-      background: white;
-      padding: 40px;
-      border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    }
+        .terminal-input-row input {
+            background: transparent;
+            border: none;
+            color: #38bdf8;
+            font-family: monospace;
+            font-size: 0.95rem;
+            width: 100%;
+            outline: none;
+        }
 
-    .page-card h2 {
-      font-size: 32px;
-      color: #1f2937;
-      margin-bottom: 15px;
-    }
+        /* Grid System */
+        .features {
+            max-width: 1100px;
+            margin: 0 auto 7rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
 
-    .grid-layout {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-      margin-top: 30px;
-    }
+        .card {
+            background: rgba(31, 41, 55, 0.4);
+            border: 1px solid var(--border-color);
+            padding: 2.5rem 2rem;
+            border-radius: 10px;
+            backdrop-filter: blur(4px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-    .grid-box {
-      background: #f9fafb;
-      padding: 24px;
-      border-radius: 12px;
-      border: 1px solid #e5e7eb;
-    }
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-color);
+            background: rgba(31, 41, 55, 0.6);
+        }
 
-    .grid-box h4 {
-      font-size: 18px;
-      color: #4f46e5;
-      margin-bottom: 10px;
-    }
+        .card h3 {
+            color: #fff;
+            margin-bottom: 1rem;
+            font-size: 1.35rem;
+        }
 
-    .price-tag {
-      font-size: 36px;
-      font-weight: 800;
-      color: #1f2937;
-      margin: 15px 0;
-    }
-  </style>
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Clean Profile/About Layout */
+        .about-section {
+            background: #0b0f19;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 6rem 2rem;
+        }
+
+        .about-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .about-header {
+            margin-bottom: 3.5rem;
+        }
+
+        .about-header h2 {
+            font-size: 2.4rem;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .about-header p {
+            color: var(--accent-color);
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .bio-content p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .bio-content strong {
+            color: #fff;
+        }
+
+        .skills-panel {
+            background: var(--terminal-bg);
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            border-radius: 10px;
+        }
+
+        .skills-panel h4 {
+            color: #fff;
+            margin-bottom: 1.25rem;
+            font-size: 1.1rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .stack-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+
+        .badge {
+            background: rgba(99, 102, 241, 0.08);
+            color: #a5b4fc;
+            padding: 0.4rem 0.9rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            transition: all 0.2s;
+        }
+
+        .badge:hover {
+            background: rgba(99, 102, 241, 0.15);
+            border-color: var(--accent-color);
+        }
+
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #4b5563;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255,255,255,0.02);
+        }
+
+        /* Cursor Animation */
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 15px;
+            background: #fff;
+            margin-left: 4px;
+            animation: flash 1s infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes flash {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Responsive Fixes */
+        @media (max-width: 768px) {
+            .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+            .hero h1 { font-size: 2.6rem; }
+            nav { padding: 1.25rem 5%; }
+            .nav-links { display: none; } /* Mobile simplicity */
+        }
+    </style>
 </head>
 <body>
 
-  <!-- Header Navigation with Integrated Tab Management -->
-  <nav class="navbar">
-    <a href="#" class="logo" onclick="switchPage(event, 'home-page')">ASK NOVA</a>
-    
-    <div class="nav-tabs">
-      <button class="tab-btn active" onclick="switchPage(event, 'home-page')">Explore</button>
-      <button class="tab-btn" onclick="switchPage(event, 'features-page')">Features</button>
-      <button class="tab-btn" onclick="switchPage(event, 'pricing-page')">Pricing</button>
-    </div>
+    <nav>
+        <div class="logo">ASK-<span>NOVA</span></div>
+        <ul class="nav-links">
+            <li><a href="#features">Core Engines</a></li>
+            <li><a href="#about">Architecture & Developer</a></li>
+        </ul>
+        <a href="https://github.com" target="_blank" class="btn-git">Repository Link</a>
+    </nav>
 
-    <a href="#" class="cta-btn">Sign Up</a>
-  </nav>
+    <main class="hero">
+        <h1>Autonomous System Framework<br><span>ASK-NOVA Agent</span></h1>
+        <p>A computational execution entity built to interact dynamically with complex code structures, process multi-layered contextual prompts, and automate workflows natively inside GitHub ecosystems.</p>
 
-  <!-- PAGE 1: HOME / EXPLORE (SEARCH HERO) -->
-  <main id="home-page" class="page-content active">
-    <div class="hero-container">
-      <h1>Discover Verified <span>Data & Facts</span> Across the Globe</h1>
-      <p>Search thousands of deep research papers, historical reference points, demographic records, and data trends.</p>
-
-      <form onsubmit="handleSearch(event)">
-        <div class="search-wrapper">
-          <div class="search-icon"></div>
-          <input 
-            type="text" 
-            id="hero-search"
-            class="search-input" 
-            placeholder="Search science, history, modern statistics..."
-            autocomplete="off"
-          >
-          <button type="submit" class="search-submit-btn">Search</button>
+        <div class="terminal">
+            <div class="terminal-header">
+                <div class="dots">
+                    <span class="dot dot-r"></span>
+                    <span class="dot dot-y"></span>
+                    <span class="dot dot-g"></span>
+                </div>
+                <div class="terminal-title">nova-core://agent-terminal</div>
+            </div>
+            <div class="terminal-body">
+                <div id="terminal-history">
+                    </div>
+                <div class="terminal-input-row">
+                    <span class="prompt-symbol">nova@user:~$</span>
+                    <input type="text" id="user-terminal-input" placeholder="Type custom command (e.g., 'help', 'status') & press Enter..." autocomplete="off">
+                </div>
+            </div>
         </div>
-      </form>
+    </main>
 
-      <div class="trending-tags">
-        <span>Trending Facts:</span>
-        <span class="tag" onclick="quickSearch('Space Exploration')">Space Exploration</span>
-        <span class="tag" onclick="quickSearch('Global Economics')">Global Economics</span>
-        <span class="tag" onclick="quickSearch('Deep Sea Creatures')">Deep Sea Creatures</span>
-      </div>
-    </div>
-  </main>
-
-  <!-- PAGE 2: FEATURES -->
-  <section id="features-page" class="page-content">
-    <div class="page-card">
-      <h2>Platform Features</h2>
-      <p style="color: #6b7280;">Why data analysts and research teams choose ASK NOVA for checking information values.</p>
-      
-      <div class="grid-layout">
-        <div class="grid-box">
-          <h4>Peer-Reviewed Verification</h4>
-          <p style="color: #4b5563; font-size: 15px; margin-top: 5px;">Every fact inside our engine goes through a multi-layer confirmation matrix from industry academics.</p>
+    <section id="features" class="features">
+        <div class="card">
+            <h3>Logical Contextual Mapping</h3>
+            <p>Parses structured indices and repositories seamlessly using vector configurations to stay sharp, responsive, and completely context-aware.</p>
         </div>
-        <div class="grid-box">
-          <h4>Real-Time Analytics</h4>
-          <p style="color: #4b5563; font-size: 15px; margin-top: 5px;">Track demographic data fluctuations and trends as they update dynamically across regional sources.</p>
+        <div class="card">
+            <h3>Automated Integration</h3>
+            <p>Runs prompt-based analytical triggers directly alongside target file parameters to scale speed and drop build redundancy.</p>
         </div>
-        <div class="grid-box">
-          <h4>Secure Citation Exports</h4>
-          <p style="color: #4b5563; font-size: 15px; margin-top: 5px;">Download ready-made citations in APA, MLA, or Chicago format straight into your working document setup.</p>
+        <div class="card">
+            <h3>Refined Pipeline Architecture</h3>
+            <p>Engineered cleanly to deploy as an automated action agent, ensuring responsive code auditing with full performance tracking.</p>
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- PAGE 3: PRICING -->
-  <section id="pricing-page" class="page-content">
-    <div class="page-card">
-      <h2 style="text-align: center;">Simple, Transparent Pricing</h2>
-      <p style="color: #6b7280; text-align: center; margin-bottom: 10px;">Pick the plan that matches your research workload speed requirement.</p>
-      
-      <div class="grid-layout">
-        <!-- Basic Plan -->
-        <div class="grid-box" style="background: white;">
-          <h3>Standard Tier</h3>
-          <div class="price-tag">$0<span style="font-size: 14px; font-weight: 400; color: #6b7280;"> / month</span></div>
-          <p style="color: #6b7280; font-size: 14px; margin-bottom: 20px;">Basic verification checks for casual enthusiasts.</p>
-          <hr style="border: 0; border-top: 1px solid #e5e7eb; margin-bottom: 15px;">
-          <p style="font-size: 14px; color: #4b5563;">✓ 50 search queries daily</p>
-          <p style="font-size: 14px; color: #4b5563; margin-top: 5px;">✓ Standard citation toolkit</p>
+    <section id="about" class="about-section">
+        <div class="about-container">
+            <div class="about-header">
+                <h2>System Architecture</h2>
+                <p>PROJECT ORIGIN & DEVELOPER OVERVIEW</p>
+            </div>
+            <div class="about-grid">
+                <div class="bio-content">
+                    <p><strong>ASK-NOVA</strong> represents an exploration into autonomous logic processing systems. It is structured to handle tasks programmatically without sacrificing clarity or code safety layout paradigms.</p>
+                    <p>This software concept and layout is designed, engineered, and maintained by <strong>Pratham Dada</strong>, an aspiring <strong>BCA (Bachelor of Computer Applications)</strong> student deep-diving into modern application architectures, logic pipelines, and semantic script building blocks.</p>
+                </div>
+                <div class="skills-panel">
+                    <h4>Technical Competencies</h4>
+                    <div class="stack-group">
+                        <span class="badge">HTML5 / Semantic Layouts</span>
+                        <span class="badge">CSS3 Custom Variables</span>
+                        <span class="badge">JavaScript (DOM & Async Operations)</span>
+                        <span class="badge">System Architecture Design</span>
+                        <span class="badge">Git / Version Workflows</span>
+                        <span class="badge">Responsive UI Engineering</span>
+                    </div>
+                </div>
+            </div>
         </div>
+    </section>
 
-        <!-- Pro Plan -->
-        <div class="grid-box" style="border: 2px solid #4f46e5; background: white; position: relative;">
-          <span style="position: absolute; top: -12px; right: 20px; background: #4f46e5; color: white; font-size: 12px; font-weight: bold; padding: 2px 10px; border-radius: 20px;">POPULAR</span>
-          <h3>Researcher Pro</h3>
-          <div class="price-tag">$29<span style="font-size: 14px; font-weight: 400; color: #6b7280;"> / month</span></div>
-          <p style="color: #6b7280; font-size: 14px; margin-bottom: 20px;">Advanced features for student networks and small teams.</p>
-          <hr style="border: 0; border-top: 1px solid #e5e7eb; margin-bottom: 15px;">
-          <p style="font-size: 14px; color: #4b5563;">✓ Unlimited lookups</p>
-          <p style="font-size: 14px; color: #4b5563; margin-top: 5px;">✓ API access for bulk data parsing</p>
-          <p style="font-size: 14px; color: #4b5563; margin-top: 5px;">✓ Priority system rendering speed</p>
-        </div>
-      </div>
-    </div>
-  </section>
+    <footer>
+        <p>&copy; 2026 ASK-NOVA Framework. Concept and logic structured by Pratham Dada.</p>
+    </footer>
 
-  <script>
-    // Handles changing entire content blocks like distinct separate views
-    function switchPage(event, pageId) {
-      event.preventDefault();
+    <script>
+        const historyContainer = document.getElementById('terminal-history');
+        const userInput = document.getElementById('user-terminal-input');
 
-      // 1. Hide all page container components
-      const pages = document.querySelectorAll('.page-content');
-      pages.forEach(page => page.classList.remove('active'));
+        // Automatic Intro Simulation Sequence
+        const scriptSequence = [
+            { cmd: "initialize ask-nova --core", delay: 400 },
+            { output: "⚙ Booting Nova Agent Kernel Core v2.4.1...", delay: 800 },
+            { cmd: "ask-nova --check-status", delay: 1400 },
+            { output: "🟢 Status: Online | Core Temperature: Stable | Node Connection: Secure", delay: 1800 },
+            { cmd: "ask-nova --developer-info", delay: 2400 },
+            { output: "👤 Developer verified: Pratham Dada [BCA Student Framework Architect]", delay: 2800 }
+        ];
 
-      // 2. Remove highlighted style from old tab buttons
-      const buttons = document.querySelectorAll('.tab-btn');
-      buttons.forEach(btn => btn.classList.remove('active'));
+        // Function to safely print lines to terminal
+        function appendTerminalLine(text, isCommand = false) {
+            const line = document.createElement('div');
+            line.className = 'line';
+            
+            if (isCommand) {
+                line.innerHTML = `<span class="prompt-symbol">nova@system:~$</span><span class="cmd-text">${text}</span>`;
+            } else {
+                line.innerHTML = `<span class="output-text">${text}</span>`;
+            }
+            historyContainer.appendChild(line);
+            historyContainer.scrollTop = historyContainer.scrollHeight;
+        }
 
-      // 3. Make selected page block visible
-      document.getElementById(pageId).classList.add('active');
+        // Run baseline sequence automatically
+        scriptSequence.forEach(step => {
+            setTimeout(() => {
+                if (step.cmd) {
+                    appendTerminalLine(step.cmd, true);
+                } else if (step.output) {
+                    appendTerminalLine(step.output, false);
+                }
+            }, step.delay);
+        });
 
-      // 4. Highlight the matching tab button based on action target
-      // If clicked the logo, default highlight the 'Explore' tab button
-      if (event.currentTarget.classList.contains('logo')) {
-        document.querySelector('.nav-tabs .tab-btn:first-child').classList.add('active');
-      } else {
-        event.currentTarget.classList.add('active');
-      }
-    }
+        // Event listener for custom user interaction inputs
+        userInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const query = userInput.value.trim().toLowerCase();
+                if (!query) return;
 
-    // Handles search submission tracking
-    function handleSearch(event) {
-      event.preventDefault();
-      const query = document.getElementById('hero-search').value;
-      if(query.trim() !== "") {
-        alert('Searching ASK NOVA database for: "' + query + '"');
-      }
-    }
+                // Echo the user input back into terminal
+                const userLine = document.createElement('div');
+                userLine.className = 'line';
+                userLine.innerHTML = `<span class="prompt-symbol">nova@user:~$</span><span class="cmd-text" style="color: #38bdf8;">${userInput.value}</span>`;
+                historyContainer.appendChild(userLine);
 
-    // Interactive helper for quick-click trending tags
-    function quickSearch(tagValue) {
-      const searchBar = document.getElementById('hero-search');
-      searchBar.value = tagValue;
-      searchBar.focus();
-      alert('Quick searching ASK NOVA registry for: "' + tagValue + '"');
-    }
-  </script>
+                // Basic mock response module logic
+                setTimeout(() => {
+                    if (query === 'help') {
+                        appendTerminalLine("Available triggers: 'status' | 'about' | 'clear' | 'version'");
+                    } else if (query === 'status') {
+                        appendTerminalLine("🟢 System running smoothly. All pipeline hooks responding within optimal thresholds (14ms).");
+                    } else if (query === 'about') {
+                        appendTerminalLine("🤖 ASK-NOVA is an AI development layout built by Pratham Dada, a dedicated student pursuing a Bachelor of Computer Applications.");
+                    } else if (query === 'clear') {
+                        historyContainer.innerHTML = '';
+                        appendTerminalLine("Terminal output cleared successfully.");
+                    } else if (query === 'version') {
+                        appendTerminalLine("ASK-NOVA Core Edition v2.4.1 (Stable Release build-2026).");
+                    } else {
+                        appendTerminalLine(`⚠️ Command error: '${query}' not parsed natively. Type 'help' for instructions.`);
+                    }
+                }, 300);
 
+                // Reset input element
+                userInput.value = '';
+            }
+        });
+    </script>
 </body>
-</html>s
+</html>
