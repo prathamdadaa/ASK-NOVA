@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ASK-NOVA | Next-Gen AI Agent</title>
+    <title>ASK-NOVA | Next-Gen AI Agent & BCA Hub</title>
     <style>
         :root {
             --bg-color: #030712;
@@ -14,6 +14,7 @@
             --card-bg: #1f2937;
             --border-color: #374151;
             --terminal-bg: #111827;
+            --success-color: #10b981;
         }
 
         * {
@@ -31,73 +32,11 @@
             overflow-x: hidden;
         }
 
-        /* Navbar Layout */
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.25rem 8%;
-            border-bottom: 1px solid var(--border-color);
-            background: rgba(3, 7, 18, 0.85);
-            backdrop-filter: blur(12px);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .logo {
-            font-size: 1.4rem;
-            font-weight: 800;
-            letter-spacing: 1.5px;
-            color: #fff;
-        }
-
-        .logo span {
-            color: var(--accent-color);
-            text-shadow: 0 0 15px var(--accent-glow);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2.5rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.95rem;
-            transition: color 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            color: var(--accent-color);
-        }
-
-        .btn-git {
-            background: rgba(99, 102, 241, 0.1);
-            color: #fff;
-            border: 1px solid var(--accent-color);
-            padding: 0.6rem 1.4rem;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .btn-git:hover {
-            background: var(--accent-color);
-            box-shadow: 0 0 20px var(--accent-glow);
-            transform: translateY(-1px);
-        }
-
         /* Hero Wrapper */
         .hero {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 6rem 2rem 4rem 2rem;
+            padding: 6rem 2rem 3rem 2rem;
             text-align: center;
             display: flex;
             flex-direction: column;
@@ -126,7 +65,7 @@
             margin-bottom: 2.5rem;
         }
 
-        /* New Search Component Interface */
+        /* Search Component Interface */
         .search-container {
             width: 100%;
             max-width: 750px;
@@ -178,7 +117,7 @@
             overflow: hidden;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
             text-align: left;
-            margin-bottom: 6rem;
+            margin-bottom: 4rem;
         }
 
         .terminal-header {
@@ -189,16 +128,8 @@
             border-bottom: 1px solid var(--border-color);
         }
 
-        .dots {
-            display: flex;
-            gap: 7px;
-        }
-
-        .dot {
-            width: 11px;
-            height: 11px;
-            border-radius: 50%;
-        }
+        .dots { display: flex; gap: 7px; }
+        .dot { width: 11px; height: 11px; border-radius: 50%; }
         .dot-r { background: #ef4444; }
         .dot-y { background: #f59e0b; }
         .dot-g { background: #10b981; }
@@ -206,7 +137,7 @@
         .terminal-title {
             color: var(--text-muted);
             font-size: 0.8rem;
-            margin-auto: auto;
+            margin: auto;
             font-family: monospace;
             width: 100%;
             text-align: center;
@@ -217,8 +148,8 @@
             padding: 1.75rem;
             font-family: 'Fira Code', 'Courier New', monospace;
             font-size: 0.95rem;
-            min-height: 250px;
-            max-height: 400px;
+            min-height: 220px;
+            max-height: 350px;
             overflow-y: auto;
         }
 
@@ -229,68 +160,121 @@
             align-items: flex-start;
         }
 
-        .prompt-header {
+        .prompt-header { display: flex; align-items: center; }
+        .prompt-symbol { color: var(--accent-color); margin-right: 10px; user-select: none; font-weight: bold; }
+        .cmd-text { color: #fff; }
+        .output-text { color: #34d399; padding-left: 20px; margin-top: 0.25rem; margin-bottom: 0.75rem; white-space: pre-line; line-height: 1.5; }
+
+        /* Navigation shortcut bar */
+        .shortcut-bar {
             display: flex;
-            align-items: center;
+            gap: 15px;
+            margin-bottom: 5rem;
         }
 
-        .prompt-symbol {
+        .shortcut-link {
             color: var(--accent-color);
-            margin-right: 10px;
-            user-select: none;
-            font-weight: bold;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-bottom: 1px dashed var(--accent-color);
+            transition: color 0.2s;
         }
+        .shortcut-link:hover { color: #fff; border-bottom-color: #fff; }
 
-        .cmd-text {
-            color: #fff;
-        }
-
-        .output-text {
-            color: #34d399;
-            padding-left: 20px;
-            margin-top: 0.25rem;
-            margin-bottom: 0.75rem;
-            white-space: pre-line;
-            line-height: 1.5;
-        }
-
-        /* Grid System */
-        .features {
+        /* Course Matrix Dashboard Section */
+        .resources-section {
             max-width: 1100px;
-            margin: 0 auto 7rem auto;
+            margin: 0 auto 6rem auto;
             padding: 0 2rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 2.5rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .section-title span {
+            color: var(--accent-color);
+        }
+
+        .resource-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 2rem;
         }
 
-        .card {
-            background: rgba(31, 41, 55, 0.4);
+        .resource-card {
+            background: rgba(31, 41, 55, 0.3);
             border: 1px solid var(--border-color);
-            padding: 2.5rem 2rem;
-            border-radius: 10px;
-            backdrop-filter: blur(4px);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
         }
 
-        .card:hover {
-            transform: translateY(-4px);
+        .resource-card:hover {
             border-color: var(--accent-color);
-            background: rgba(31, 41, 55, 0.6);
+            background: rgba(31, 41, 55, 0.5);
+            transform: translateY(-2px);
         }
 
-        .card h3 {
+        .resource-card h3 {
             color: #fff;
-            margin-bottom: 1rem;
-            font-size: 1.35rem;
+            font-size: 1.3rem;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.75rem;
         }
 
-        .card p {
-            color: var(--text-muted);
+        .course-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .course-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .course-info h4 {
+            color: #f3f4f6;
             font-size: 0.95rem;
+            font-weight: 600;
         }
 
-        /* Clean Profile/About Layout */
+        .course-info p {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .study-btn {
+            background: rgba(99, 102, 241, 0.1);
+            color: #a5b4fc;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            transition: all 0.2s;
+        }
+
+        .study-btn:hover {
+            background: var(--accent-color);
+            color: #fff;
+            border-color: var(--accent-color);
+        }
+
+        /* Profile/About Layout */
         .about-section {
             background: #0b0f19;
             border-top: 1px solid var(--border-color);
@@ -333,10 +317,6 @@
             margin-bottom: 1.5rem;
         }
 
-        .bio-content strong {
-            color: #fff;
-        }
-
         .skills-panel {
             background: var(--terminal-bg);
             border: 1px solid var(--border-color);
@@ -366,12 +346,6 @@
             font-size: 0.85rem;
             font-weight: 500;
             border: 1px solid rgba(99, 102, 241, 0.2);
-            transition: all 0.2s;
-        }
-
-        .badge:hover {
-            background: rgba(99, 102, 241, 0.15);
-            border-color: var(--accent-color);
         }
 
         footer {
@@ -385,29 +359,19 @@
         @media (max-width: 768px) {
             .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
             .hero h1 { font-size: 2.6rem; }
-            nav { padding: 1.25rem 5%; }
-            .nav-links { display: none; }
             .search-container { flex-direction: column; }
+            .shortcut-bar { flex-wrap: wrap; justify-content: center; }
         }
     </style>
 </head>
 <body>
 
-    <nav>
-        <div class="logo">ASK-<span>NOVA</span></div>
-        <ul class="nav-links">
-            <li><a href="#features">Core Engines</a></li>
-            <li><a href="#about">Architecture & Developer</a></li>
-        </ul>
-        <a href="https://github.com" target="_blank" class="btn-git">Repository Link</a>
-    </nav>
-
     <main class="hero">
         <h1>Autonomous System Framework<br><span>ASK-NOVA Agent</span></h1>
-        <p>A computational execution entity built to interact dynamically with complex code structures, process multi-layered contextual prompts, and automate workflows natively inside GitHub ecosystems.</p>
+        <p>A computational execution entity built to interact dynamically with complex code structures, process multi-layered contextual prompts, and serve study resources for tech students.</p>
 
         <div class="search-container">
-            <input type="text" id="search-field" class="search-input" placeholder="Search a topic (e.g., html, css, javascript, ai)...">
+            <input type="text" id="search-field" class="search-input" placeholder="Search a topic (e.g., html, css, dsa, python, bca)...">
             <button id="search-action-btn" class="search-btn">Query Agent</button>
         </div>
 
@@ -423,20 +387,145 @@
             <div class="terminal-body" id="terminal-history">
                 </div>
         </div>
+
+        <div class="shortcut-bar">
+            <a href="#courses" class="shortcut-link">↗ Free Tech Courses</a>
+            <a href="#materials" class="shortcut-link">↗ BCA Study Materials</a>
+            <a href="#about" class="shortcut-link">↗ Developer Portfolio</a>
+        </div>
     </main>
 
-    <section id="features" class="features">
-        <div class="card">
-            <h3>Logical Contextual Mapping</h3>
-            <p>Parses structured indices and repositories seamlessly using vector configurations to stay sharp, responsive, and completely context-aware.</p>
+    <section id="courses" class="resources-section">
+        <h2 class="section-title">Free <span>Educational Courses</span></h2>
+        <div class="resource-grid">
+            
+            <div class="resource-card">
+                <h3>🌐 Frontend & Web Design</h3>
+                <ul class="course-list">
+                    <li class="course-item">
+                        <div class="course-info">
+                            <h4>HTML & CSS Fundamentals</h4>
+                            <p>FreeCodeCamp Full Course</p>
+                        </div>
+                        <a href="https://www.freecodecamp.org/learn/2022/responsive-web-design/" target="_blank" class="study-btn">Start</a>
+                    </li>
+                    <li class="course-item">
+                        <div class="course-info">
+                            <h4>TypeScript Deep Dive</h4>
+                            <p>Official Handbook Guides</p>
+                        </div>
+                        <a href="https://www.typescriptlang.org/docs/" target="_blank" class="study-btn">Access</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="resource-card">
+                <h3>💻 Core Systems Programming</h3>
+                <ul class="course-list">
+                    <li class="course-item">
+                        <div class="course-info">
+                            <h4>C Programming Language</h4>
+                            <p>Complete Beginner Roadmap</p>
+                        </div>
+                        <a href="https://www.youtube.com/watch?v=KJgsSFOSQv0" target="_blank" class="study-btn">Watch</a>
+                    </li>
+                    <li class="course-item">
+                        <div class="course-info">
+                            <h4>C++ Object-Oriented (OOPs)</h4>
+                            <p>Standard Academy Curriculum</p>
+                        </div>
+                        <a href="https://www.learncpp.com/" target="_blank" class="study-btn">Read</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="resource-card">
+                <h3>🐍 Advanced & Backend Logic</h3>
+                <ul class="course-list">
+                    <li class="course-item">
+                        <div class="course-info">
+                            <h4>Python Core Bootcamp</h4>
+                            <p>Automation & Scripting Track</p>
+                        </div>
+                        <a href="https://docs.python.org/3/tutorial/" target="_blank" class="study-btn">Open</a>
+                    </li>
+                    <li class="course-item">
+                        <div class="course-info">
+                            <h4>Data Structures & Algorithms (DSA)</h4>
+                            <p>Problem Solving Patterns</p>
+                        </div>
+                        <a href="https://www.geeksforgeeks.org/data-structures/" target="_blank" class="study-btn">Explore</a>
+                    </li>
+                </ul>
+            </div>
+
         </div>
-        <div class="card">
-            <h3>Automated Integration</h3>
-            <p>Runs prompt-based analytical triggers directly alongside target file parameters to scale speed and drop build redundancy.</p>
-        </div>
-        <div class="card">
-            <h3>Refined Pipeline Architecture</h3>
-            <p>Engineered cleanly to deploy as an automated action agent, ensuring responsive code auditing with full performance tracking.</p>
+    </section>
+
+    <section id="materials" class="resources-section" style="border-top: 1px solid var(--border-color); padding-top: 5rem;">
+        <h2 class="section-title">BCA <span>Academic Reference Materials</span></h2>
+        <div class="resource-grid">
+
+            <div class="resource-card">
+                <h3>📐 Mathematical Foundations</h3>
+                <ul class="course-list">
+                    <li class="course-item">
+                        <div class="course-info">
+                            <h4>Discrete Mathematics</h4>
+                            <p>Set Theory, Logic Gates & Matrices</p>
+                        </div>
+                        <a href="https://www.javatpoint.com/discrete-mathematics-tutorial" target="_blank" class="study-btn">Notes</a>
+                    </li>
+                    <li class="course-item">
+                        <div class="course-info">
+                            <h4>Computer Oriented Stats</h4>
+                            <p>Probability & Numerical Methods</p>
+                        </div>
+                        <a href="#" class="study-btn">PDF</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="resource-card">
+                <h3>🖥️ System Architecture & Databases</h3>
+                <ul class="course-list">
+                    <li class="course-item">
+                        <div class="course-info">
+                            <h4>DBMS (SQL Structures)</h4>
+                            <p>Normalization & Relational Algebra</p>
+                        </div>
+                        <a href="https://www.w3schools.com/sql/" target="_blank" class="study-btn">Learn</a>
+                    </li>
+                    <li class="course-item">
+                        <div class="course-info">
+                            <h4>Operating System Principles</h4>
+                            <p>Process Scheduling & Memory Management</p>
+                        </div>
+                        <a href="https://www.tutorialspoint.com/operating_system/index.htm" target="_blank" class="study-btn">Notes</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="resource-card">
+                <h3>📂 Software Engineering & Labs</h3>
+                <ul class="course-list">
+                    <li class="course-item">
+                        <div class="course-info">
+                            <h4>Software Engineering Models</h4>
+                            <p>SDLC, Agile & Spiral Development</p>
+                        </div>
+                        <a href="#" class="study-btn">Docs</a>
+                    </li>
+                    <li class="course-item">
+                        <div class="course-info">
+                            <h4>Tally & ERP Implementation</h4>
+                            <p>Digital Accounting Frameworks</p>
+                        </div>
+                        <a href="#" class="study-btn">Guide</a>
+                    </li>
+                </ul>
+            </div>
+
         </div>
     </section>
 
@@ -475,14 +564,18 @@
         const searchField = document.getElementById('search-field');
         const searchActionBtn = document.getElementById('search-action-btn');
 
-        // Professional Knowledge Database (Safe, factual, and constructive definitions)
+        // Extended Knowledge Database for Course and BCA references
         const topicDatabase = {
-            "html": "📌 HTML (HyperText Markup Language):\nThe standard structural foundation of web pages. It elements define headings, paragraphs, links, and structure panels across web designs.",
-            "css": "📌 CSS (Cascading Style Sheets):\nThe presentation engine used to design layout presentation. It handles colors, spacing, typography, responsiveness, and aesthetic custom variables.",
-            "javascript": "📌 JavaScript:\nA high-level scripting language enabling dynamic logic on the client side. It runs terminal computations, structural animations, and interactive event triggers.",
-            "js": "📌 JavaScript:\nA high-level scripting language enabling dynamic logic on the client side. It runs terminal computations, structural animations, and interactive event triggers.",
+            "html": "📌 HTML (HyperText Markup Language):\nThe standard structural foundation of web pages. Check out the Frontend panel below for the full FreeCodeCamp roadmap link.",
+            "css": "📌 CSS (Cascading Style Sheets):\nThe presentation engine used to design layouts. Handles colors, typography, responsiveness, and dark-mode variables.",
+            "javascript": "📌 JavaScript:\nA high-level scripting language enabling dynamic interactive event triggers. Essential core foundation for modern web engineering.",
+            "js": "📌 JavaScript:\nA high-level scripting language enabling dynamic interactive event triggers. Essential core foundation for modern web engineering.",
+            "python": "📌 Python Language:\nHighly readable programming language perfect for software development, scripting, data engineering, and artificial intelligence prototyping.",
+            "c": "📌 C Programming:\nThe structural mother of modern languages. Offers foundational understanding of execution loops, compilation pipelines, and explicit memory layout management.",
+            "c++": "📌 C++ Language:\nAn extension of C implementing Object-Oriented Programming (OOP) architectures. Broadly utilized in high-performance application design and system compilation architectures.",
+            "typescript": "📌 TypeScript:\nA strict syntactic superset of JavaScript adding static type interfaces to drop production compile-time anomalies safely.",
+            "dsa": "📌 Data Structures & Algorithms (DSA):\nThe core framework of programming optimization. Includes Linked Lists, Trees, Graphs, Sorting algorithms, and algorithmic complexity tracking.",
             "ai": "📌 Artificial Intelligence (AI):\nThe engineering methodology behind simulating intelligent computational logic processing. It streamlines data discovery frameworks and structural automation tasks seamlessly.",
-            "git": "📌 Git:\nA decentralized version management system tracking file modification matrices across collective development teams to ensure collaborative project integrity.",
             "bca": "📌 BCA (Bachelor of Computer Applications):\nA structured undergraduate degree pathway designed to educate students in foundational programming languages, database structures, web engineering, and system development portfolios."
         };
 
@@ -490,9 +583,8 @@
         const scriptSequence = [
             { cmd: "initialize ask-nova --core", delay: 300 },
             { output: "⚙ Booting Nova Agent Kernel Core v2.4.1...", delay: 600 },
-            { cmd: "ask-nova --check-status", delay: 1000 },
-            { output: "🟢 Status: Online | Core System Architecture: Secure", delay: 1300 },
-            { output: "💡 Knowledge Base Ready. Use the Search Bar above to query educational parameters.", delay: 1600 }
+            { cmd: "ask-nova --load-bca-modules", delay: 1000 },
+            { output: "📚 Catalog Loaded: Courses for HTML, Python, C, C++, TypeScript, and DSA are actively running below.", delay: 1300 }
         ];
 
         // Function to safely print lines to terminal
@@ -525,23 +617,20 @@
             const query = searchField.value.trim().toLowerCase();
             if (!query) return;
 
-            // Log query inside the terminal visual wrapper safely
-            appendTerminalLine(`search --topic "${searchField.value}"`, true);
+            // Log query inside terminal safely
+            appendTerminalLine(`search --query "${searchField.value}"`, true);
 
             setTimeout(() => {
-                // Return exact matched topics or friendly standardized fallback instructions
                 if (topicDatabase[query]) {
                     appendTerminalLine(topicDatabase[query]);
                 } else {
-                    appendTerminalLine(`ℹ️ Query reference complete. Topic insight for '${searchField.value}' not mapped natively. \nTry searching: HTML, CSS, JavaScript, Git, or AI for general educational definitions.`);
+                    appendTerminalLine(`ℹ️ Query reference complete. Topic insight for '${searchField.value}' not mapped natively. \nTry searching: html, css, c, c++, python, typescript, dsa, or bca.`);
                 }
             }, 250);
 
-            // Clean the input box layout
             searchField.value = '';
         }
 
-        // Connect button and enter keys to trigger the search query safely
         searchActionBtn.addEventListener('click', executeSearchQuery);
         searchField.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
