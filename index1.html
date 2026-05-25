@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASK-NOVA | Next-Gen AI Agent</title>
+    <style>
+        :root {
+            --bg-color: #030712;
+            --text-color: #f3f4f6;
+            --text-muted: #9ca3af;
+            --accent-color: #6366f1;
+            --accent-glow: rgba(99, 102, 241, 0.3);
+            --card-bg: #1f2937;
+            --border-color: #374151;
+            --terminal-bg: #111827;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navbar Layout */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 8%;
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(3, 7, 18, 0.85);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            color: #fff;
+        }
+
+        .logo span {
+            color: var(--accent-color);
+            text-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+
+        .btn-git {
+            background: rgba(99, 102, 241, 0.1);
+            color: #fff;
+            border: 1px solid var(--accent-color);
+            padding: 0.6rem 1.4rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-git:hover {
+            background: var(--accent-color);
+            box-shadow: 0 0 20px var(--accent-glow);
+            transform: translateY(-1px);
+        }
+
+        /* Hero Wrapper */
+        .hero {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 7rem 2rem 4rem 2rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .hero h1 {
+            font-size: 3.8rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            color: #fff;
+            letter-spacing: -1px;
+            line-height: 1.15;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, #a5b4fc 0%, var(--accent-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 650px;
+            margin-bottom: 3.5rem;
+        }
+
+        /* Dynamic Interactive Terminal */
+        .terminal {
+            width: 100%;
+            max-width: 750px;
+            background: var(--terminal-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            text-align: left;
+            margin-bottom: 6rem;
+        }
+
+        .terminal-header {
+            background: #1f2937;
+            padding: 0.85rem 1.25rem;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .dots {
+            display: flex;
+            gap: 7px;
+        }
+
+        .dot {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+        }
+        .dot-r { background: #ef4444; }
+        .dot-y { background: #f59e0b; }
+        .dot-g { background: #10b981; }
+
+        .terminal-title {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            margin-auto: auto;
+            font-family: monospace;
+            width: 100%;
+            text-align: center;
+            padding-right: 35px;
+        }
+
+        .terminal-body {
+            padding: 1.75rem;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            font-size: 0.95rem;
+            min-height: 220px;
+        }
+
+        .line {
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .prompt-symbol {
+            color: var(--accent-color);
+            margin-right: 10px;
+            user-select: none;
+        }
+
+        .cmd-text {
+            color: #fff;
+        }
+
+        .output-text {
+            color: #34d399;
+            padding-left: 20px;
+            margin-top: 0.25rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Interactive Input inside Terminal */
+        .terminal-input-row {
+            display: flex;
+            align-items: center;
+            margin-top: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding-top: 1rem;
+        }
+
+        .terminal-input-row input {
+            background: transparent;
+            border: none;
+            color: #38bdf8;
+            font-family: monospace;
+            font-size: 0.95rem;
+            width: 100%;
+            outline: none;
+        }
+
+        /* Grid System */
+        .features {
+            max-width: 1100px;
+            margin: 0 auto 7rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: rgba(31, 41, 55, 0.4);
+            border: 1px solid var(--border-color);
+            padding: 2.5rem 2rem;
+            border-radius: 10px;
+            backdrop-filter: blur(4px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-color);
+            background: rgba(31, 41, 55, 0.6);
+        }
+
+        .card h3 {
+            color: #fff;
+            margin-bottom: 1rem;
+            font-size: 1.35rem;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Clean Profile/About Layout */
+        .about-section {
+            background: #0b0f19;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 6rem 2rem;
+        }
+
+        .about-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .about-header {
+            margin-bottom: 3.5rem;
+        }
+
+        .about-header h2 {
+            font-size: 2.4rem;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .about-header p {
+            color: var(--accent-color);
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .bio-content p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .bio-content strong {
+            color: #fff;
+        }
+
+        .skills-panel {
+            background: var(--terminal-bg);
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            border-radius: 10px;
+        }
+
+        .skills-panel h4 {
+            color: #fff;
+            margin-bottom: 1.25rem;
+            font-size: 1.1rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .stack-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+
+        .badge {
+            background: rgba(99, 102, 241, 0.08);
+            color: #a5b4fc;
+            padding: 0.4rem 0.9rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            transition: all 0.2s;
+        }
+
+        .badge:hover {
+            background: rgba(99, 102, 241, 0.15);
+            border-color: var(--accent-color);
+        }
+
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #4b5563;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255,255,255,0.02);
+        }
+
+        /* Cursor Animation */
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 15px;
+            background: #fff;
+            margin-left: 4px;
+            animation: flash 1s infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes flash {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Responsive Fixes */
+        @media (max-width: 768px) {
+            .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+            .hero h1 { font-size: 2.6rem; }
+            nav { padding: 1.25rem 5%; }
+            .nav-links { display: none; } /* Mobile simplicity */
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">ASK-<span>NOVA</span></div>
+        <ul class="nav-links">
+            <li><a href="#features">Core Engines</a></li>
+            <li><a href="#about">Architecture & Developer</a></li>
+        </ul>
+        <a href="https://github.com" target="_blank" class="btn-git">Repository Link</a>
+    </nav>
+
+    <main class="hero">
+        <h1>Autonomous System Framework<br><span>ASK-NOVA Agent</span></h1>
+        <p>A computational execution entity built to interact dynamically with complex code structures, process multi-layered contextual prompts, and automate workflows natively inside GitHub ecosystems.</p>
+
+        <div class="terminal">
+            <div class="terminal-header">
+                <div class="dots">
+                    <span class="dot dot-r"></span>
+                    <span class="dot dot-y"></span>
+                    <span class="dot dot-g"></span>
+                </div>
+                <div class="terminal-title">nova-core://agent-terminal</div>
+            </div>
+            <div class="terminal-body">
+                <div id="terminal-history">
+                    </div>
+                <div class="terminal-input-row">
+                    <span class="prompt-symbol">nova@user:~$</span>
+                    <input type="text" id="user-terminal-input" placeholder="Type custom command (e.g., 'help', 'status') & press Enter..." autocomplete="off">
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <section id="features" class="features">
+        <div class="card">
+            <h3>Logical Contextual Mapping</h3>
+            <p>Parses structured indices and repositories seamlessly using vector configurations to stay sharp, responsive, and completely context-aware.</p>
+        </div>
+        <div class="card">
+            <h3>Automated Integration</h3>
+            <p>Runs prompt-based analytical triggers directly alongside target file parameters to scale speed and drop build redundancy.</p>
+        </div>
+        <div class="card">
+            <h3>Refined Pipeline Architecture</h3>
+            <p>Engineered cleanly to deploy as an automated action agent, ensuring responsive code auditing with full performance tracking.</p>
+        </div>
+    </section>
+
+    <section id="about" class="about-section">
+        <div class="about-container">
+            <div class="about-header">
+                <h2>System Architecture</h2>
+                <p>PROJECT ORIGIN & DEVELOPER OVERVIEW</p>
+            </div>
+            <div class="about-grid">
+                <div class="bio-content">
+                    <p><strong>ASK-NOVA</strong> represents an exploration into autonomous logic processing systems. It is structured to handle tasks programmatically without sacrificing clarity or code safety layout paradigms.</p>
+                    <p>This software concept and layout is designed, engineered, and maintained by <strong>Pratham Dada</strong>, an aspiring <strong>BCA (Bachelor of Computer Applications)</strong> student deep-diving into modern application architectures, logic pipelines, and semantic script building blocks.</p>
+                </div>
+                <div class="skills-panel">
+                    <h4>Technical Competencies</h4>
+                    <div class="stack-group">
+                        <span class="badge">HTML5 / Semantic Layouts</span>
+                        <span class="badge">CSS3 Custom Variables</span>
+                        <span class="badge">JavaScript (DOM & Async Operations)</span>
+                        <span class="badge">System Architecture Design</span>
+                        <span class="badge">Git / Version Workflows</span>
+                        <span class="badge">Responsive UI Engineering</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 ASK-NOVA Framework. Concept and logic structured by Pratham Dada.</p>
+    </footer>
+
+    <script>
+        const historyContainer = document.getElementById('terminal-history');
+        const userInput = document.getElementById('user-terminal-input');
+
+        // Automatic Intro Simulation Sequence
+        const scriptSequence = [
+            { cmd: "initialize ask-nova --core", delay: 400 },
+            { output: "⚙ Booting Nova Agent Kernel Core v2.4.1...", delay: 800 },
+            { cmd: "ask-nova --check-status", delay: 1400 },
+            { output: "🟢 Status: Online | Core Temperature: Stable | Node Connection: Secure", delay: 1800 },
+            { cmd: "ask-nova --developer-info", delay: 2400 },
+            { output: "👤 Developer verified: Pratham Dada [BCA Student Framework Architect]", delay: 2800 }
+        ];
+
+        // Function to safely print lines to terminal
+        function appendTerminalLine(text, isCommand = false) {
+            const line = document.createElement('div');
+            line.className = 'line';
+            
+            if (isCommand) {
+                line.innerHTML = `<span class="prompt-symbol">nova@system:~$</span><span class="cmd-text">${text}</span>`;
+            } else {
+                line.innerHTML = `<span class="output-text">${text}</span>`;
+            }
+            historyContainer.appendChild(line);
+            historyContainer.scrollTop = historyContainer.scrollHeight;
+        }
+
+        // Run baseline sequence automatically
+        scriptSequence.forEach(step => {
+            setTimeout(() => {
+                if (step.cmd) {
+                    appendTerminalLine(step.cmd, true);
+                } else if (step.output) {
+                    appendTerminalLine(step.output, false);
+                }
+            }, step.delay);
+        });
+
+        // Event listener for custom user interaction inputs
+        userInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const query = userInput.value.trim().toLowerCase();
+                if (!query) return;
+
+                // Echo the user input back into terminal
+                const userLine = document.createElement('div');
+                userLine.className = 'line';
+                userLine.innerHTML = `<span class="prompt-symbol">nova@user:~$</span><span class="cmd-text" style="color: #38bdf8;">${userInput.value}</span>`;
+                historyContainer.appendChild(userLine);
+
+                // Basic mock response module logic
+                setTimeout(() => {
+                    if (query === 'help') {
+                        appendTerminalLine("Available triggers: 'status' | 'about' | 'clear' | 'version'");
+                    } else if (query === 'status') {
+                        appendTerminalLine("🟢 System running smoothly. All pipeline hooks responding within optimal thresholds (14ms).");
+                    } else if (query === 'about') {
+                        appendTerminalLine("🤖 ASK-NOVA is an AI development layout built by Pratham Dada, a dedicated student pursuing a Bachelor of Computer Applications.");
+                    } else if (query === 'clear') {
+                        historyContainer.innerHTML = '';
+                        appendTerminalLine("Terminal output cleared successfully.");
+                    } else if (query === 'version') {
+                        appendTerminalLine("ASK-NOVA Core Edition v2.4.1 (Stable Release build-2026).");
+                    } else {
+                        appendTerminalLine(`⚠️ Command error: '${query}' not parsed natively. Type 'help' for instructions.`);
+                    }
+                }, 300);
+
+                // Reset input element
+                userInput.value = '';
+            }
+        });
+    </script>
+</body>
+</html>
