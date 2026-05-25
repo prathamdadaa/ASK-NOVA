@@ -14,7 +14,6 @@
             --card-bg: #1f2937;
             --border-color: #374151;
             --terminal-bg: #111827;
-            --success-color: #10b981;
         }
 
         * {
@@ -36,7 +35,7 @@
         .hero {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 6rem 2rem 3rem 2rem;
+            padding: 7rem 2rem 3rem 2rem;
             text-align: center;
             display: flex;
             flex-direction: column;
@@ -194,7 +193,6 @@
             font-weight: 800;
             margin-bottom: 2.5rem;
             text-align: center;
-            position: relative;
         }
 
         .section-title span {
@@ -274,7 +272,7 @@
             border-color: var(--accent-color);
         }
 
-        /* Profile/About Layout */
+        /* Profile/About Layout with Photo Box Integration */
         .about-section {
             background: #0b0f19;
             border-top: 1px solid var(--border-color);
@@ -283,7 +281,7 @@
         }
 
         .about-container {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 0 auto;
         }
 
@@ -306,15 +304,39 @@
 
         .about-grid {
             display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            gap: 4rem;
+            grid-template-columns: 280px 1.2fr 1fr;
+            gap: 2.5rem;
             align-items: start;
+        }
+
+        /* Photo Component Styling */
+        .profile-photo-wrapper {
+            width: 100%;
+            background: var(--terminal-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .profile-image {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            display: block;
+            object-fit: cover;
+            border: 1px solid rgba(255,255,255,0.05);
+            background: #1e1e2e; /* Fallback placeholder color */
         }
 
         .bio-content p {
             color: var(--text-muted);
             font-size: 1.05rem;
             margin-bottom: 1.5rem;
+        }
+
+        .bio-content strong {
+            color: #fff;
         }
 
         .skills-panel {
@@ -356,8 +378,9 @@
             border-top: 1px solid rgba(255,255,255,0.02);
         }
 
-        @media (max-width: 768px) {
-            .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+        @media (max-width: 992px) {
+            .about-grid { grid-template-columns: 1fr; gap: 2.5rem; justify-items: center; text-align: center; }
+            .profile-photo-wrapper { max-width: 280px; }
             .hero h1 { font-size: 2.6rem; }
             .search-container { flex-direction: column; }
             .shortcut-bar { flex-wrap: wrap; justify-content: center; }
@@ -536,6 +559,11 @@
                 <p>PROJECT ORIGIN & DEVELOPER OVERVIEW</p>
             </div>
             <div class="about-grid">
+                
+                <div class="profile-photo-wrapper">
+                    <img src="your-photo.jpg" alt="Pratham Dada" class="profile-image">
+                </div>
+
                 <div class="bio-content">
                     <p><strong>ASK-NOVA</strong> represents an exploration into autonomous logic processing systems. It is structured to handle tasks programmatically without sacrificing clarity or code safety layout paradigms.</p>
                     <p>This software concept and layout is designed, engineered, and maintained by <strong>Pratham Dada</strong>, an aspiring <strong>BCA (Bachelor of Computer Applications)</strong> student deep-diving into modern application architectures, logic pipelines, and semantic script building blocks.</p>
@@ -564,7 +592,6 @@
         const searchField = document.getElementById('search-field');
         const searchActionBtn = document.getElementById('search-action-btn');
 
-        // Extended Knowledge Database for Course and BCA references
         const topicDatabase = {
             "html": "📌 HTML (HyperText Markup Language):\nThe standard structural foundation of web pages. Check out the Frontend panel below for the full FreeCodeCamp roadmap link.",
             "css": "📌 CSS (Cascading Style Sheets):\nThe presentation engine used to design layouts. Handles colors, typography, responsiveness, and dark-mode variables.",
@@ -579,7 +606,6 @@
             "bca": "📌 BCA (Bachelor of Computer Applications):\nA structured undergraduate degree pathway designed to educate students in foundational programming languages, database structures, web engineering, and system development portfolios."
         };
 
-        // Automatic Intro Simulation Sequence
         const scriptSequence = [
             { cmd: "initialize ask-nova --core", delay: 300 },
             { output: "⚙ Booting Nova Agent Kernel Core v2.4.1...", delay: 600 },
@@ -587,7 +613,6 @@
             { output: "📚 Catalog Loaded: Courses for HTML, Python, C, C++, TypeScript, and DSA are actively running below.", delay: 1300 }
         ];
 
-        // Function to safely print lines to terminal
         function appendTerminalLine(text, isCommand = false) {
             const line = document.createElement('div');
             line.className = 'line';
@@ -601,7 +626,6 @@
             historyContainer.scrollTop = historyContainer.scrollHeight;
         }
 
-        // Run baseline sequence automatically
         scriptSequence.forEach(step => {
             setTimeout(() => {
                 if (step.cmd) {
@@ -612,12 +636,10 @@
             }, step.delay);
         });
 
-        // Search Execution Handler Logic
         function executeSearchQuery() {
             const query = searchField.value.trim().toLowerCase();
             if (!query) return;
 
-            // Log query inside terminal safely
             appendTerminalLine(`search --query "${searchField.value}"`, true);
 
             setTimeout(() => {
