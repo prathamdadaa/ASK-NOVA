@@ -33,6 +33,61 @@
             width: 100%;
         }
 
+        /* --- GLOBAL NAVIGATION SUBMENU BAR --- */
+        .system-nav-header {
+            background: #0f172a;
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(12px);
+        }
+
+        .nav-brand {
+            font-weight: 800;
+            font-size: 1.2rem;
+            letter-spacing: -0.5px;
+            color: #fff;
+        }
+
+        .nav-brand span {
+            color: var(--accent-color);
+        }
+
+        .nav-folders {
+            display: flex;
+            gap: 20px;
+        }
+
+        .folder-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .folder-link:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .folder-link.active {
+            color: #fff;
+            background: rgba(99, 102, 241, 0.15);
+            border-color: rgba(99, 102, 241, 0.4);
+        }
+
         /* --- INSTAGRAM TOP BAR --- */
         .instagram-top-bar {
             background: #0f172a;
@@ -43,7 +98,7 @@
             font-weight: 500;
             letter-spacing: 0.5px;
             color: var(--text-color);
-            display: none; /* Controlled by display state loop on boot exit */
+            display: none; 
             justify-content: center;
             align-items: center;
             gap: 6px;
@@ -61,6 +116,195 @@
 
         .instagram-top-bar a:hover {
             color: var(--accent-color);
+        }
+
+        /* --- BUNNY SUPPORT CHAT SYSTEM --- */
+        .bunny-chat-trigger {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(99, 102, 241, 0.4);
+            cursor: pointer;
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .bunny-chat-trigger:hover {
+            transform: scale(1.08) translateY(-5px);
+            box-shadow: 0 12px 40px rgba(99, 102, 241, 0.6);
+        }
+
+        .bunny-svg {
+            width: 42px;
+            height: 42px;
+            transition: transform 0.3s ease;
+        }
+
+        .bunny-ear {
+            transform-origin: 50% 100%;
+            transition: transform 0.3s ease;
+        }
+
+        .bunny-chat-trigger:hover .ear-left {
+            animation: twitchLeft 0.6s infinite alternate ease-in-out;
+        }
+
+        .bunny-chat-trigger:hover .ear-right {
+            animation: twitchRight 0.6s infinite alternate ease-in-out linear 0.1s;
+        }
+
+        .bunny-chat-trigger:hover .bunny-face-group {
+            animation: bobFace 0.6s infinite alternate ease-in-out;
+        }
+
+        @keyframes twitchLeft {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(-8deg); }
+        }
+        @keyframes twitchRight {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(8deg); }
+        }
+        @keyframes bobFace {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(1.5px); }
+        }
+
+        .bunny-chat-window {
+            position: fixed;
+            bottom: 105px;
+            right: 25px;
+            width: 340px;
+            height: 450px;
+            background: #0f172a;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 30px rgba(99, 102, 241, 0.15);
+            z-index: 99998;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transform: scale(0.9) translateY(20px);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .bunny-chat-window.active {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .chat-window-header {
+            background: #1e2937;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chat-header-info h4 {
+            font-size: 0.95rem;
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .chat-header-info p {
+            font-size: 0.75rem;
+            color: #34d399;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .chat-header-info p::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: #34d399;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .chat-msg-body {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: rgba(17, 24, 39, 0.4);
+        }
+
+        .chat-bubble {
+            max-width: 80%;
+            padding: 0.65rem 0.85rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            word-wrap: break-word;
+        }
+
+        .bubble-bot {
+            background: #1f2937;
+            color: #e5e7eb;
+            align-self: flex-start;
+            border-top-left-radius: 2px;
+        }
+
+        .bubble-user {
+            background: var(--accent-color);
+            color: #fff;
+            align-self: flex-end;
+            border-top-right-radius: 2px;
+        }
+
+        .chat-input-area {
+            padding: 0.75rem;
+            background: #111827;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 8px;
+        }
+
+        .chat-text-input {
+            flex: 1;
+            background: #1f2937;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.55rem 0.75rem;
+            color: #fff;
+            font-size: 0.85rem;
+            outline: none;
+        }
+
+        .chat-text-input:focus {
+            border-color: var(--accent-color);
+        }
+
+        .chat-send-btn {
+            background: var(--accent-color);
+            border: none;
+            color: white;
+            padding: 0.55rem 0.85rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .chat-send-btn:hover {
+            background: #4f46e5;
         }
 
         /* --- SCREEN FLOW SYSTEM INTERFACES --- */
@@ -105,7 +349,7 @@
             height: 100vh;
             background: var(--overlay-bg);
             z-index: 9999;
-            display: none; /* Injected via boot sequence */
+            display: none; 
             justify-content: center;
             align-items: center;
             padding: 1.5rem;
@@ -218,7 +462,6 @@
             text-decoration: underline;
         }
 
-        /* Hide main workspace before access validation completes */
         #dashboard-workspace {
             display: none;
             opacity: 0;
@@ -488,7 +731,6 @@
 
         footer { text-align: center; padding: 4rem 1.5rem; color: #4b5563; font-size: 0.9rem; border-top: 1px solid rgba(255,255,255,0.02); width: 100%; }
 
-        /* --- ANIMATIONS SYSTEM PROFILES --- */
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
         @keyframes modalSlideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -499,36 +741,91 @@
         }
 
         @media (max-width: 600px) {
+            .system-nav-header { flex-direction: column; gap: 15px; padding: 1rem; }
             .search-container { flex-direction: column; gap: 12px; }
             .search-btn { width: 100%; padding: 0.8rem; }
             .hero { padding-top: 3rem; }
             .resource-grid { grid-template-columns: 1fr; }
             .compiler-controls { flex-direction: column; align-items: flex-start; }
             .lang-select { width: 100%; }
+            .bunny-chat-window { width: calc(100vw - 40px); right: 20px; bottom: 95px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- INSTAGRAM GLOBAL TOP BANNER -->
+    <header class="system-nav-header">
+        <div class="nav-brand">NOVA//<span>WORKSPACE</span></div>
+        <nav class="nav-folders">
+            <a href="index.html" class="folder-link active">
+                📁 Core_Agent.sh
+            </a>
+            <a href="projects.html" class="folder-link">
+                📁 Work_Directory/
+            </a>
+        </nav>
+    </header>
+
     <div id="top-announcement-bar" class="instagram-top-bar">
         <span>Connect on social workspace:</span> 
         <a href="https://instagram.com/prathamdadaa" target="_blank">@prathamdadaa</a>
     </div>
 
-    <!-- STAGE 1: SIMULATED HARDWARE INITIALIZATION OVERLAY -->
+    <div id="bunny-trigger" class="bunny-chat-trigger" onclick="toggleBunnyChatWindow()">
+        <svg class="bunny-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g class="bunny-ear ear-left">
+                <ellipse cx="38" cy="25" rx="7" ry="20" fill="#E2E8F0"/>
+                <ellipse cx="38" cy="27" rx="4" ry="14" fill="#F472B6"/>
+            </g>
+            <g class="bunny-ear ear-right">
+                <ellipse cx="62" cy="25" rx="7" ry="20" fill="#E2E8F0"/>
+                <ellipse cx="62" cy="27" rx="4" ry="14" fill="#F472B6"/>
+            </g>
+            <g class="bunny-face-group">
+                <circle cx="50" cy="62" r="24" fill="#E2E8F0"/>
+                <circle cx="41" cy="58" r="3" fill="#1E293B"/>
+                <circle cx="59" cy="58" r="3" fill="#1E293B"/>
+                <circle cx="36" cy="65" r="2.5" fill="#F472B6" opacity="0.6"/>
+                <circle cx="64" cy="65" r="2.5" fill="#F472B6" opacity="0.6"/>
+                <polygon points="48,64 52,64 50,66" fill="#F472B6"/>
+                <path d="M47,68 Q50,70 50,68 Q50,70 53,68" stroke="#1E293B" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+            </g>
+        </svg>
+    </div>
+
+    <div id="bunny-window" class="bunny-chat-window">
+        <div class="chat-window-header">
+            <svg width="32" height="32" viewBox="0 0 100 100" fill="none">
+                <circle cx="50" cy="55" r="20" fill="#E2E8F0"/>
+                <ellipse cx="40" cy="25" rx="5" ry="15" fill="#E2E8F0"/>
+                <ellipse cx="60" cy="25" rx="5" ry="15" fill="#E2E8F0"/>
+                <circle cx="44" cy="52" r="2.5" fill="#1E293B"/>
+                <circle cx="56" cy="52" r="2.5" fill="#1E293B"/>
+            </svg>
+            <div class="chat-header-info">
+                <h4>Nova Support Agent</h4>
+                <p>Online & Active</p>
+            </div>
+        </div>
+        <div class="chat-msg-body" id="bunny-msg-logs">
+            <div class="chat-bubble bubble-bot">
+                Hello there! I am your interactive assistant. Drop a message or ask about your programming tracks!
+            </div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="bunny-input-field" class="chat-text-input" placeholder="Type an inquiry message...">
+            <button class="chat-send-btn" onclick="fireBunnyUserMessage()">Send</button>
+        </div>
+    </div>
+
     <div id="boot-screen">
         <div class="boot-log-container" id="boot-logger"></div>
     </div>
 
-    <!-- STAGE 2: ACCESS VALIDATION INTERFACE MATRIX -->
     <div id="auth-screen">
-        <div class="auth-card" id="auth-card-payload">
-            <!-- Screen state injected dynamically via Authentication state loop handles -->
-        </div>
+        <div class="auth-card" id="auth-card-payload"></div>
     </div>
 
-    <!-- STAGE 3: CORE APPLICATION INTERFACE ENVIRONMENT -->
     <div id="dashboard-workspace">
         <main class="hero container-fluid">
             <h1>Autonomous System Framework<br><span>ASK-NOVA Agent</span></h1>
@@ -738,9 +1035,7 @@
         </footer>
     </div>
 
-    <!-- --- LOGIC RUNTIME ENGINE CONTROL --- -->
     <script>
-        // DOM Node Bindings
         const bootScreen = document.getElementById('boot-screen');
         const bootLogger = document.getElementById('boot-logger');
         const authScreen = document.getElementById('auth-screen');
@@ -753,7 +1048,11 @@
         const searchActionBtn = document.getElementById('search-action-btn');
         const compilerFrame = document.getElementById('compiler-frame');
 
-        // Runtime Simulated Configuration Pipelines
+        // Bunny Chat Components
+        const bunnyWindow = document.getElementById('bunny-window');
+        const bunnyMsgLogs = document.getElementById('bunny-msg-logs');
+        const bunnyInputField = document.getElementById('bunny-input-field');
+
         const bootLogs = [
             "Initializing NOVA kernel core loading routines...",
             "Checking system memory structures... OK [16GB Virtual Allocated]",
@@ -783,6 +1082,46 @@
             "ai": "📌 Artificial Intelligence (AI):\nThe engineering methodology behind simulating intelligent computational logic processing. It streamlines data discovery frameworks and structural automation tasks seamlessly.",
             "bca": "📌 BCA (Bachelor of Computer Applications):\nA structured undergraduate degree pathway designed to educate students in foundational programming languages, database structures, web engineering, and system development portfolios."
         };
+
+        // --- INTERACTIVE BUNNY SUPPORT OPERATIONS ---
+        function toggleBunnyChatWindow() {
+            bunnyWindow.classList.toggle('active');
+        }
+
+        function fireBunnyUserMessage() {
+            const rawText = bunnyInputField.value.trim();
+            if(!rawText) return;
+
+            const userBubble = document.createElement('div');
+            userBubble.className = "chat-bubble bubble-user";
+            userBubble.textContent = rawText;
+            bunnyMsgLogs.appendChild(userBubble);
+            bunnyInputField.value = '';
+            bunnyMsgLogs.scrollTop = bunnyMsgLogs.scrollHeight;
+
+            setTimeout(() => {
+                const botBubble = document.createElement('div');
+                botBubble.className = "chat-bubble bubble-bot";
+                
+                const query = rawText.toLowerCase();
+                if(query.includes('hello') || query.includes('hi')) {
+                    botBubble.textContent = "Hi friend! Ready to dive into some code structures today?";
+                } else if(query.includes('bca') || query.includes('notes') || query.includes('study')) {
+                    botBubble.textContent = "Check out the academic block at the bottom of the dashboard! We've got Discrete Mathematics, DBMS, and System architecture documentation ready.";
+                } else if(query.includes('compiler')) {
+                    botBubble.textContent = "The Live Multilang Sandbox is mounted near the top. Select Python, C, or C++ to run expressions instantly.";
+                } else {
+                    botBubble.textContent = "I've logged your request into my database matrix. Let me know if you need specific help navigating your BCA framework resources!";
+                }
+
+                bunnyMsgLogs.appendChild(botBubble);
+                bunnyMsgLogs.scrollTop = bunnyMsgLogs.scrollHeight;
+            }, 600);
+        }
+
+        bunnyInputField.addEventListener('keydown', (e) => {
+            if(e.key === 'Enter') fireBunnyUserMessage();
+        });
 
         // --- STAGE 1: BOOT SEQUENCE EXECUTION ENGINE ---
         let currentLogIndex = 0;
@@ -858,8 +1197,6 @@
 
         function handleAuthSubmit(event, mode) {
             event.preventDefault();
-            
-            // Fast visual transition mock to unmount security gates safely
             authScreen.style.opacity = '0';
             setTimeout(() => {
                 authScreen.style.display = 'none';
@@ -934,7 +1271,6 @@
             searchField.value = '';
         }
 
-        // Global Dynamic Event Triggers
         searchActionBtn.addEventListener('click', executeSearchQuery);
         searchField.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
@@ -942,7 +1278,6 @@
             }
         });
 
-        // Initialize App Runtime Loop
         window.addEventListener('DOMContentLoaded', () => {
             renderBootSequence();
         });
