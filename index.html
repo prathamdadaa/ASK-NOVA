@@ -14,6 +14,7 @@
             --card-bg: #1f2937;
             --border-color: #374151;
             --terminal-bg: #111827;
+            --overlay-bg: rgba(3, 7, 18, 0.98);
         }
 
         * {
@@ -32,7 +33,169 @@
             width: 100%;
         }
 
-        /* Fluid Layout Utility Wrapper */
+        /* --- SCREEN FLOW SYSTEM INTERFACES --- */
+        #boot-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .boot-log-container {
+            width: 100%;
+            max-width: 600px;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            color: #34d399;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+
+        .boot-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 15px;
+            background: #34d399;
+            animation: blink 0.8s infinite;
+            vertical-align: middle;
+        }
+
+        #auth-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: var(--overlay-bg);
+            z-index: 9999;
+            display: none; /* Injected via boot sequence */
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+            backdrop-filter: blur(8px);
+            transition: opacity 0.4s ease;
+        }
+
+        .auth-card {
+            background: #0f172a;
+            border: 1px solid var(--border-color);
+            width: 100%;
+            max-width: 420px;
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 40px var(--accent-glow);
+            transform: translateY(20px);
+            animation: modalSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .auth-header h2 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .auth-header h2 span {
+            background: linear-gradient(135deg, #a5b4fc 0%, var(--accent-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .auth-header p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .input-group label {
+            font-size: 0.85rem;
+            color: #e5e7eb;
+            font-weight: 500;
+        }
+
+        .auth-input {
+            background: rgba(31, 41, 55, 0.6);
+            border: 1px solid var(--border-color);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s, background-color 0.2s;
+        }
+
+        .auth-input:focus {
+            border-color: var(--accent-color);
+            background: rgba(31, 41, 55, 0.9);
+        }
+
+        .auth-submit-btn {
+            background: var(--accent-color);
+            color: #fff;
+            border: none;
+            padding: 0.85rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .auth-submit-btn:hover {
+            background: #4f46e5;
+        }
+
+        .auth-submit-btn:active {
+            transform: scale(0.98);
+        }
+
+        .auth-toggle-link {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 1.5rem;
+        }
+
+        .auth-toggle-link span {
+            color: var(--accent-color);
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: underline;
+        }
+
+        /* Hide main workspace before access validation completes */
+        #dashboard-workspace {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        /* --- DASHBOARD CORE ENGINE STYLES --- */
         .container-fluid {
             width: 100%;
             max-width: 1100px;
@@ -40,7 +203,6 @@
             padding: 0 1.5rem;
         }
 
-        /* Hero Header Adjustment Matrix */
         .hero {
             padding: 6rem 1.5rem 2.5rem 1.5rem;
             text-align: center;
@@ -51,7 +213,7 @@
         }
 
         .hero h1 {
-            font-size: clamp(2.2rem, 5vw, 3.8rem); /* Scale perfectly based on view size */
+            font-size: clamp(2.2rem, 5vw, 3.8rem);
             font-weight: 800;
             margin-bottom: 1.5rem;
             color: #fff;
@@ -73,7 +235,6 @@
             padding: 0 0.5rem;
         }
 
-        /* Search Layout Engine Component */
         .search-container {
             width: 100%;
             max-width: 750px;
@@ -117,7 +278,6 @@
             background: #4f46e5;
         }
 
-        /* Responsive Simulated Terminal Node */
         .terminal {
             width: 100%;
             max-width: 750px;
@@ -175,7 +335,6 @@
         .cmd-text { color: #fff; word-break: break-all; }
         .output-text { color: #34d399; padding-left: 15px; margin-top: 0.25rem; margin-bottom: 0.75rem; white-space: pre-line; line-height: 1.5; word-break: break-word; }
 
-        /* Responsive Compiler Component Box Layer */
         .compiler-container {
             width: 100%;
             max-width: 750px;
@@ -219,13 +378,12 @@
 
         .compiler-iframe {
             width: 100%;
-            height: clamp(380px, 50vh, 480px); /* Adjust compiler height adaptively */
+            height: clamp(380px, 50vh, 480px);
             border: none;
             display: block;
             background: #1e1e1e;
         }
 
-        /* Flexible Fluid Navigation Shortcuts */
         .shortcut-bar {
             display: flex;
             gap: 15px;
@@ -245,82 +403,19 @@
         }
         .shortcut-link:hover { color: #fff; border-bottom-color: #fff; }
 
-        /* Course and Resource Layout Grids */
-        .resources-section {
-            padding: 4rem 0;
-        }
-
-        .section-title {
-            font-size: clamp(1.6rem, 4vw, 2rem);
-            font-weight: 800;
-            margin-bottom: 2.5rem;
-            text-align: center;
-        }
-
-        .section-title span {
-            color: var(--accent-color);
-        }
-
-        .resource-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
-            gap: 1.75rem;
-        }
-
-        .resource-card {
-            background: rgba(31, 41, 55, 0.3);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 1.75rem;
-            transition: all 0.3s ease;
-        }
-
-        .resource-card:hover {
-            border-color: var(--accent-color);
-            background: rgba(31, 41, 55, 0.5);
-            transform: translateY(-2px);
-        }
-
-        .resource-card h3 {
-            color: #fff;
-            font-size: 1.25rem;
-            margin-bottom: 1.25rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 0.75rem;
-        }
-
-        .course-list {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 1.1rem;
-        }
-
-        .course-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .course-info {
-            flex: 1;
-        }
-
-        .course-info h4 {
-            color: #f3f4f6;
-            font-size: 0.95rem;
-            font-weight: 600;
-        }
-
-        .course-info p {
-            color: var(--text-muted);
-            font-size: 0.8rem;
-        }
-
+        .resources-section { padding: 4rem 0; }
+        .section-title { font-size: clamp(1.6rem, 4vw, 2rem); font-weight: 800; margin-bottom: 2.5rem; text-align: center; }
+        .section-title span { color: var(--accent-color); }
+        .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1.75rem; }
+        .resource-card { background: rgba(31, 41, 55, 0.3); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.75rem; transition: all 0.3s ease; }
+        .resource-card:hover { border-color: var(--accent-color); background: rgba(31, 41, 55, 0.5); transform: translateY(-2px); }
+        .resource-card h3 { color: #fff; font-size: 1.25rem; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem; }
+        .course-list { list-style: none; display: flex; flex-direction: column; gap: 1.1rem; }
+        .course-item { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+        .course-info { flex: 1; }
+        .course-info h4 { color: #f3f4f6; font-size: 0.95rem; font-weight: 600; }
+        .course-info p { color: var(--text-muted); font-size: 0.8rem; }
+        
         .study-btn {
             background: rgba(99, 102, 241, 0.1);
             color: #a5b4fc;
@@ -334,47 +429,14 @@
             text-align: center;
         }
 
-        .study-btn:hover {
-            background: var(--accent-color);
-            color: #fff;
-            border-color: var(--accent-color);
-        }
+        .study-btn:hover { background: var(--accent-color); color: #fff; border-color: var(--accent-color); }
 
-        /* Fully Adaptive Fluid Layout Architecture Profile */
-        .about-section {
-            background: #0b0f19;
-            border-top: 1px solid var(--border-color);
-            border-bottom: 1px solid var(--border-color);
-            padding: 5rem 0;
-            width: 100%;
-        }
-
-        .about-header {
-            margin-bottom: 3rem;
-            text-align: center;
-        }
-
-        .about-header h2 {
-            font-size: clamp(1.8rem, 4vw, 2.4rem);
-            color: #fff;
-            margin-bottom: 0.5rem;
-        }
-
-        .about-header p {
-            color: var(--accent-color);
-            font-size: 0.85rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-        }
-
-        .about-grid {
-            display: grid;
-            grid-template-columns: 260px 1.2fr 1fr;
-            gap: 2rem;
-            align-items: start;
-        }
-
-        /* Device-Responsive Photo Container Frame Matrix */
+        .about-section { background: #0b0f19; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); padding: 5rem 0; width: 100%; }
+        .about-header { margin-bottom: 3rem; text-align: center; }
+        .about-header h2 { font-size: clamp(1.8rem, 4vw, 2.4rem); color: #fff; margin-bottom: 0.5rem; }
+        .about-header p { color: var(--accent-color); font-size: 0.85rem; font-weight: 700; letter-spacing: 2px; }
+        .about-grid { display: grid; grid-template-columns: 260px 1.2fr 1fr; gap: 2rem; align-items: start; }
+        
         .profile-photo-wrapper {
             width: 100%;
             max-width: 260px;
@@ -386,325 +448,278 @@
             margin: 0 auto;
         }
 
-        .profile-image {
-            width: 100%;
-            height: auto;
-            border-radius: 8px;
-            display: block;
-            object-fit: cover;
-            border: 1px solid rgba(255,255,255,0.05);
-            background: #1e1e2e;
-        }
+        .profile-image { width: 100%; height: auto; border-radius: 8px; display: block; object-fit: cover; border: 1px solid rgba(255,255,255,0.05); background: #1e1e2e; }
+        .bio-content p { color: var(--text-muted); font-size: 1.05rem; margin-bottom: 1.5rem; }
+        .bio-content strong { color: #fff; }
+        .skills-panel { background: var(--terminal-bg); border: 1px solid var(--border-color); padding: 1.75rem; border-radius: 10px; width: 100%; }
+        .skills-panel h4 { color: #fff; margin-bottom: 1.25rem; font-size: 1.1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; }
+        .stack-group { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+        .badge { background: rgba(99, 102, 241, 0.08); color: #a5b4fc; padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.85rem; font-weight: 500; border: 1px solid rgba(99, 102, 241, 0.2); }
 
-        .bio-content p {
-            color: var(--text-muted);
-            font-size: 1.05rem;
-            margin-bottom: 1.5rem;
-        }
+        footer { text-align: center; padding: 4rem 1.5rem; color: #4b5563; font-size: 0.9rem; border-top: 1px solid rgba(255,255,255,0.02); width: 100%; }
 
-        .bio-content strong {
-            color: #fff;
-        }
+        /* --- ANIMATIONS SYSTEM PROFILES --- */
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        @keyframes modalSlideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
-        .skills-panel {
-            background: var(--terminal-bg);
-            border: 1px solid var(--border-color);
-            padding: 1.75rem;
-            border-radius: 10px;
-            width: 100%;
-        }
-
-        .skills-panel h4 {
-            color: #fff;
-            margin-bottom: 1.25rem;
-            font-size: 1.1rem;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 0.5rem;
-        }
-
-        .stack-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.6rem;
-        }
-
-        .badge {
-            background: rgba(99, 102, 241, 0.08);
-            color: #a5b4fc;
-            padding: 0.4rem 0.8rem;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            border: 1px solid rgba(99, 102, 241, 0.2);
-        }
-
-        footer {
-            text-align: center;
-            padding: 4rem 1.5rem;
-            color: #4b5563;
-            font-size: 0.9rem;
-            border-top: 1px solid rgba(255,255,255,0.02);
-            width: 100%;
-        }
-
-        /* DEVICE SCREEN BREAKPOINT ADAPTATION MATRIX */
         @media (max-width: 992px) {
-            .about-grid {
-                grid-template-columns: 1fr; /* Stack into clean single column layout on tablets */
-                gap: 2.5rem;
-            }
-            .about-header, .bio-content {
-                text-align: center;
-            }
-            .stack-group {
-                justify-content: center;
-            }
+            .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+            .about-header, .bio-content { text-align: center; }
+            .stack-group { justify-content: center; }
         }
 
         @media (max-width: 600px) {
-            .search-container {
-                flex-direction: column; /* Stack search input and button neatly on mobile screens */
-                gap: 12px;
-            }
-            .search-btn {
-                width: 100%;
-                padding: 0.8rem;
-            }
-            .hero {
-                padding-top: 4rem;
-            }
-            .resource-grid {
-                grid-template-columns: 1fr; /* Single column card stacks on small mobile viewports */
-            }
-            .compiler-controls {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .lang-select {
-                width: 100%;
-            }
+            .search-container { flex-direction: column; gap: 12px; }
+            .search-btn { width: 100%; padding: 0.8rem; }
+            .hero { padding-top: 4rem; }
+            .resource-grid { grid-template-columns: 1fr; }
+            .compiler-controls { flex-direction: column; align-items: flex-start; }
+            .lang-select { width: 100%; }
         }
     </style>
 </head>
 <body>
 
-    <main class="hero container-fluid">
-        <h1>Autonomous System Framework<br><span>ASK-NOVA Agent</span></h1>
-        <p>A computational execution entity built to interact dynamically with complex code structures, process multi-layered contextual prompts, and serve study resources for tech students.</p>
+    <div id="boot-screen">
+        <div class="boot-log-container" id="boot-logger"></div>
+    </div>
 
-        <div class="search-container">
-            <input type="text" id="search-field" class="search-input" placeholder="Search a topic (e.g., html, css, dsa, python, bca)...">
-            <button id="search-action-btn" class="search-btn">Query Agent</button>
-        </div>
+    <div id="auth-screen">
+        <div class="auth-card" id="auth-card-payload">
+            </div>
+    </div>
 
-        <div class="terminal">
-            <div class="terminal-header">
-                <div class="dots">
-                    <span class="dot dot-r"></span>
-                    <span class="dot dot-y"></span>
-                    <span class="dot dot-g"></span>
+    <div id="dashboard-workspace">
+        <main class="hero container-fluid">
+            <h1>Autonomous System Framework<br><span>ASK-NOVA Agent</span></h1>
+            <p>A computational execution entity built to interact dynamically with complex code structures, process multi-layered contextual prompts, and serve study resources for tech students.</p>
+
+            <div class="search-container">
+                <input type="text" id="search-field" class="search-input" placeholder="Search a topic (e.g., html, css, dsa, python, bca)...">
+                <button id="search-action-btn" class="search-btn">Query Agent</button>
+            </div>
+
+            <div class="terminal">
+                <div class="terminal-header">
+                    <div class="dots">
+                        <span class="dot dot-r"></span>
+                        <span class="dot dot-y"></span>
+                        <span class="dot dot-g"></span>
+                    </div>
+                    <div class="terminal-title">nova-core://agent-terminal</div>
                 </div>
-                <div class="terminal-title">nova-core://agent-terminal</div>
+                <div class="terminal-body" id="terminal-history"></div>
             </div>
-            <div class="terminal-body" id="terminal-history">
+
+            <div id="compiler" class="compiler-container">
+                <div class="compiler-controls">
+                    <div class="compiler-title-text">⚡ NOVA // Multilang-Compiler-Sandbox</div>
+                    <select id="lang-switcher" class="lang-select" onchange="switchCompilerLanguage()">
+                        <option value="python">Python 3</option>
+                        <option value="c">C Language</option>
+                        <option value="cpp">C++ (GCC)</option>
+                        <option value="html">HTML5 / Frontend</option>
+                    </select>
                 </div>
-        </div>
-
-        <div id="compiler" class="compiler-container">
-            <div class="compiler-controls">
-                <div class="compiler-title-text">⚡ NOVA // Multilang-Compiler-Sandbox</div>
-                <select id="lang-switcher" class="lang-select" onchange="switchCompilerLanguage()">
-                    <option value="python">Python 3</option>
-                    <option value="c">C Language</option>
-                    <option value="cpp">C++ (GCC)</option>
-                    <option value="html">HTML5 / Frontend</option>
-                </select>
-            </div>
-            <iframe id="compiler-frame" class="compiler-iframe" src="https://gdbgui.com/embed/python3?theme=dark"></iframe>
-        </div>
-
-        <div class="shortcut-bar">
-            <a href="#compiler" class="shortcut-link">↗ Live Code Compiler</a>
-            <a href="#courses" class="shortcut-link">↗ Free Tech Courses</a>
-            <a href="#materials" class="shortcut-link">↗ BCA Study Materials</a>
-        </div>
-    </main>
-
-    <section id="courses" class="container-fluid resources-section">
-        <h2 class="section-title">Free <span>Educational Courses</span></h2>
-        <div class="resource-grid">
-            
-            <div class="resource-card">
-                <h3>🌐 Frontend & Web Design</h3>
-                <ul class="course-list">
-                    <li class="course-item">
-                        <div class="course-info">
-                            <h4>HTML & CSS Fundamentals</h4>
-                            <p>FreeCodeCamp Full Course</p>
-                        </div>
-                        <a href="https://www.freecodecamp.org/learn/2022/responsive-web-design/" target="_blank" class="study-btn">Start</a>
-                    </li>
-                    <li class="course-item">
-                        <div class="course-info">
-                            <h4>TypeScript Deep Dive</h4>
-                            <p>Official Handbook Guides</p>
-                        </div>
-                        <a href="https://www.typescriptlang.org/docs/" target="_blank" class="study-btn">Access</a>
-                    </li>
-                </ul>
+                <iframe id="compiler-frame" class="compiler-iframe" src="https://gdbgui.com/embed/python3?theme=dark"></iframe>
             </div>
 
-            <div class="resource-card">
-                <h3>💻 Core Systems Programming</h3>
-                <ul class="course-list">
-                    <li class="course-item">
-                        <div class="course-info">
-                            <h4>C Programming Language</h4>
-                            <p>Complete Beginner Roadmap</p>
-                        </div>
-                        <a href="https://www.youtube.com/watch?v=KJgsSFOSQv0" target="_blank" class="study-btn">Watch</a>
-                    </li>
-                    <li class="course-item">
-                        <div class="course-info">
-                            <h4>C++ Object-Oriented (OOPs)</h4>
-                            <p>Standard Academy Curriculum</p>
-                        </div>
-                        <a href="https://www.learncpp.com/" target="_blank" class="study-btn">Read</a>
-                    </li>
-                </ul>
+            <div class="shortcut-bar">
+                <a href="#compiler" class="shortcut-link">↗ Live Code Compiler</a>
+                <a href="#courses" class="shortcut-link">↗ Free Tech Courses</a>
+                <a href="#materials" class="shortcut-link">↗ BCA Study Materials</a>
             </div>
+        </main>
 
-            <div class="resource-card">
-                <h3>🐍 Advanced & Backend Logic</h3>
-                <ul class="course-list">
-                    <li class="course-item">
-                        <div class="course-info">
-                            <h4>Python Core Bootcamp</h4>
-                            <p>Automation & Scripting Track</p>
-                        </div>
-                        <a href="https://docs.python.org/3/tutorial/" target="_blank" class="study-btn">Open</a>
-                    </li>
-                    <li class="course-item">
-                        <div class="course-info">
-                            <h4>Data Structures & Algorithms (DSA)</h4>
-                            <p>Problem Solving Patterns</p>
-                        </div>
-                        <a href="https://www.geeksforgeeks.org/data-structures/" target="_blank" class="study-btn">Explore</a>
-                    </li>
-                </ul>
-            </div>
-
-        </div>
-    </section>
-
-    <section id="materials" class="container-fluid resources-section" style="border-top: 1px solid var(--border-color);">
-        <h2 class="section-title">BCA <span>Academic Reference Materials</span></h2>
-        <div class="resource-grid">
-
-            <div class="resource-card">
-                <h3>📐 Mathematical Foundations</h3>
-                <ul class="course-list">
-                    <li class="course-item">
-                        <div class="course-info">
-                            <h4>Discrete Mathematics</h4>
-                            <p>Set Theory, Logic Gates & Matrices</p>
-                        </div>
-                        <a href="https://www.javatpoint.com/discrete-mathematics-tutorial" target="_blank" class="study-btn">Notes</a>
-                    </li>
-                    <li class="course-item">
-                        <div class="course-info">
-                            <h4>Computer Oriented Stats</h4>
-                            <p>Probability & Numerical Methods</p>
-                        </div>
-                        <a href="#" class="study-btn">PDF</a>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="resource-card">
-                <h3>🖥️ System Architecture & Databases</h3>
-                <ul class="course-list">
-                    <li class="course-item">
-                        <div class="course-info">
-                            <h4>DBMS (SQL Structures)</h4>
-                            <p>Normalization & Relational Algebra</p>
-                        </div>
-                        <a href="https://www.w3schools.com/sql/" target="_blank" class="study-btn">Learn</a>
-                    </li>
-                    <li class="course-item">
-                        <div class="course-info">
-                            <h4>Operating System Principles</h4>
-                            <p>Process Scheduling & Memory Management</p>
-                        </div>
-                        <a href="https://www.tutorialspoint.com/operating_system/index.htm" target="_blank" class="study-btn">Notes</a>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="resource-card">
-                <h3>📂 Software Engineering & Labs</h3>
-                <ul class="course-list">
-                    <li class="course-item">
-                        <div class="course-info">
-                            <h4>Software Engineering Models</h4>
-                            <p>SDLC, Agile & Spiral Development</p>
-                        </div>
-                        <a href="#" class="study-btn">Docs</a>
-                    </li>
-                    <li class="course-item">
-                        <div class="course-info">
-                            <h4>Tally & ERP Implementation</h4>
-                            <p>Digital Accounting Frameworks</p>
-                        </div>
-                        <a href="#" class="study-btn">Guide</a>
-                    </li>
-                </ul>
-            </div>
-
-        </div>
-    </section>
-
-    <section id="about" class="about-section">
-        <div class="container-fluid about-container">
-            <div class="about-header">
-                <h2>System Architecture</h2>
-                <p>PROJECT ORIGIN & DEVELOPER OVERVIEW</p>
-            </div>
-            
-            <div class="about-grid">
-                <div class="profile-photo-wrapper">
-                    <img src="your-photo.jpg" alt="Pratham Dada" class="profile-image">
+        <section id="courses" class="container-fluid resources-section">
+            <h2 class="section-title">Free <span>Educational Courses</span></h2>
+            <div class="resource-grid">
+                <div class="resource-card">
+                    <h3>🌐 Frontend & Web Design</h3>
+                    <ul class="course-list">
+                        <li class="course-item">
+                            <div class="course-info">
+                                <h4>HTML & CSS Fundamentals</h4>
+                                <p>FreeCodeCamp Full Course</p>
+                            </div>
+                            <a href="https://www.freecodecamp.org/learn/2022/responsive-web-design/" target="_blank" class="study-btn">Start</a>
+                        </li>
+                        <li class="course-item">
+                            <div class="course-info">
+                                <h4>TypeScript Deep Dive</h4>
+                                <p>Official Handbook Guides</p>
+                            </div>
+                            <a href="https://www.typescriptlang.org/docs/" target="_blank" class="study-btn">Access</a>
+                        </li>
+                    </ul>
                 </div>
 
-                <div class="bio-content">
-                    <p><strong>ASK-NOVA</strong> represents an exploration into autonomous logic processing systems. It is structured to handle tasks programmatically without sacrificing clarity or code safety layout paradigms.</p>
-                    <p>This software concept and layout is designed, engineered, and maintained by <strong>Pratham Dada</strong>, an aspiring <strong>BCA (Bachelor of Computer Applications)</strong> student deep-diving into modern application architectures, logic pipelines, and semantic script building blocks.</p>
+                <div class="resource-card">
+                    <h3>💻 Core Systems Programming</h3>
+                    <ul class="course-list">
+                        <li class="course-item">
+                            <div class="course-info">
+                                <h4>C Programming Language</h4>
+                                <p>Complete Beginner Roadmap</p>
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=KJgsSFOSQv0" target="_blank" class="study-btn">Watch</a>
+                        </li>
+                        <li class="course-item">
+                            <div class="course-info">
+                                <h4>C++ Object-Oriented (OOPs)</h4>
+                                <p>Standard Academy Curriculum</p>
+                            </div>
+                            <a href="https://www.learncpp.com/" target="_blank" class="study-btn">Read</a>
+                        </li>
+                    </ul>
                 </div>
 
-                <div class="skills-panel">
-                    <h4>Technical Competencies</h4>
-                    <div class="stack-group">
-                        <span class="badge">HTML5 / Semantic Layouts</span>
-                        <span class="badge">CSS3 Custom Variables</span>
-                        <span class="badge">JavaScript (DOM & Async Operations)</span>
-                        <span class="badge">System Architecture Design</span>
-                        <span class="badge">Git / Version Workflows</span>
-                        <span class="badge">Responsive UI Engineering</span>
+                <div class="resource-card">
+                    <h3>🐍 Advanced & Backend Logic</h3>
+                    <ul class="course-list">
+                        <li class="course-item">
+                            <div class="course-info">
+                                <h4>Python Core Bootcamp</h4>
+                                <p>Automation & Scripting Track</p>
+                            </div>
+                            <a href="https://docs.python.org/3/tutorial/" target="_blank" class="study-btn">Open</a>
+                        </li>
+                        <li class="course-item">
+                            <div class="course-info">
+                                <h4>Data Structures & Algorithms (DSA)</h4>
+                                <p>Problem Solving Patterns</p>
+                            </div>
+                            <a href="https://www.geeksforgeeks.org/data-structures/" target="_blank" class="study-btn">Explore</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="materials" class="container-fluid resources-section" style="border-top: 1px solid var(--border-color);">
+            <h2 class="section-title">BCA <span>Academic Reference Materials</span></h2>
+            <div class="resource-grid">
+                <div class="resource-card">
+                    <h3>📐 Mathematical Foundations</h3>
+                    <ul class="course-list">
+                        <li class="course-item">
+                            <div class="course-info">
+                                <h4>Discrete Mathematics</h4>
+                                <p>Set Theory, Logic Gates & Matrices</p>
+                            </div>
+                            <a href="https://www.javatpoint.com/discrete-mathematics-tutorial" target="_blank" class="study-btn">Notes</a>
+                        </li>
+                        <li class="course-item">
+                            <div class="course-info">
+                                <h4>Computer Oriented Stats</h4>
+                                <p>Probability & Numerical Methods</p>
+                            </div>
+                            <a href="#" class="study-btn">PDF</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="resource-card">
+                    <h3>🖥️ System Architecture & Databases</h3>
+                    <ul class="course-list">
+                        <li class="course-item">
+                            <div class="course-info">
+                                <h4>DBMS (SQL Structures)</h4>
+                                <p>Normalization & Relational Algebra</p>
+                            </div>
+                            <a href="https://www.w3schools.com/sql/" target="_blank" class="study-btn">Learn</a>
+                        </li>
+                        <li class="course-item">
+                            <div class="course-info">
+                                <h4>Operating System Principles</h4>
+                                <p>Process Scheduling & Memory Management</p>
+                            </div>
+                            <a href="https://www.tutorialspoint.com/operating_system/index.htm" target="_blank" class="study-btn">Notes</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="resource-card">
+                    <h3>📂 Software Engineering & Labs</h3>
+                    <ul class="course-list">
+                        <li class="course-item">
+                            <div class="course-info">
+                                <h4>Software Engineering Models</h4>
+                                <p>SDLC, Agile & Spiral Development</p>
+                            </div>
+                            <a href="#" class="study-btn">Docs</a>
+                        </li>
+                        <li class="course-item">
+                            <div class="course-info">
+                                <h4>Tally & ERP Implementation</h4>
+                                <p>Digital Accounting Frameworks</p>
+                            </div>
+                            <a href="#" class="study-btn">Guide</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="about-section">
+            <div class="container-fluid about-container">
+                <div class="about-header">
+                    <h2>System Architecture</h2>
+                    <p>PROJECT ORIGIN & DEVELOPER OVERVIEW</p>
+                </div>
+                
+                <div class="about-grid">
+                    <div class="profile-photo-wrapper">
+                        <img src="your-photo.jpg" alt="Pratham Dada" class="profile-image">
+                    </div>
+
+                    <div class="bio-content">
+                        <p><strong>ASK-NOVA</strong> represents an exploration into autonomous logic processing systems. It is structured to handle tasks programmatically without sacrificing clarity or code safety layout paradigms.</p>
+                        <p>This software concept and layout is designed, engineered, and maintained by <strong>Pratham Dada</strong>, an aspiring <strong>BCA (Bachelor of Computer Applications)</strong> student deep-diving into modern application architectures, logic pipelines, and semantic script building blocks.</p>
+                    </div>
+
+                    <div class="skills-panel">
+                        <h4>Technical Competencies</h4>
+                        <div class="stack-group">
+                            <span class="badge">HTML5 / Semantic Layouts</span>
+                            <span class="badge">CSS3 Custom Variables</span>
+                            <span class="badge">JavaScript (DOM & Async Operations)</span>
+                            <span class="badge">System Architecture Design</span>
+                            <span class="badge">Git / Version Workflows</span>
+                            <span class="badge">Responsive UI Engineering</span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <footer>
-        <p>&copy; 2026 ASK-NOVA Framework. Concept and logic structured by Pratham Dada.</p>
-    </footer>
+        <footer>
+            <p>&copy; 2026 ASK-NOVA Framework. Concept and logic structured by Pratham Dada.</p>
+        </footer>
+    </div>
 
     <script>
+        // DOM Node Bindings
+        const bootScreen = document.getElementById('boot-screen');
+        const bootLogger = document.getElementById('boot-logger');
+        const authScreen = document.getElementById('auth-screen');
+        const authCardPayload = document.getElementById('auth-card-payload');
+        const dashboardWorkspace = document.getElementById('dashboard-workspace');
+        
         const historyContainer = document.getElementById('terminal-history');
         const searchField = document.getElementById('search-field');
         const searchActionBtn = document.getElementById('search-action-btn');
         const compilerFrame = document.getElementById('compiler-frame');
+
+        // Runtime Simulated Configuration Pipelines
+        const bootLogs = [
+            "Initializing NOVA kernel core loading routines...",
+            "Checking system memory structures... OK [16GB Virtual Allocated]",
+            "Establishing connection parameters to secure logical sandbox...",
+            "Loading local topic structures and dictionaries...",
+            "Routing structural CSS grid adaptations... DONE",
+            "Execution environment secured. Initial loading sequences complete."
+        ];
 
         const compilerURLs = {
             "python": "https://gdbgui.com/embed/python3?theme=dark",
@@ -712,14 +727,6 @@
             "cpp": "https://gdbgui.com/embed/cpp?theme=dark",
             "html": "https://jsfiddle.net/minimal/dark/"
         };
-
-        function switchCompilerLanguage() {
-            const selectedLang = document.getElementById('lang-switcher').value;
-            if (compilerURLs[selectedLang]) {
-                compilerFrame.src = compilerURLs[selectedLang];
-                appendTerminalLine(`compiler --switch-runtime "${selectedLang.toUpperCase()}"`, true);
-            }
-        }
 
         const topicDatabase = {
             "html": "📌 HTML (HyperText Markup Language):\nThe standard structural foundation of web pages. Check out the Frontend panel below for the roadmap links.",
@@ -735,12 +742,105 @@
             "bca": "📌 BCA (Bachelor of Computer Applications):\nA structured undergraduate degree pathway designed to educate students in foundational programming languages, database structures, web engineering, and system development portfolios."
         };
 
-        const scriptSequence = [
-            { cmd: "initialize ask-nova --core", delay: 300 },
-            { output: "⚙ Booting Nova Agent Kernel Core v2.4.1...", delay: 600 },
-            { cmd: "ask-nova --load-responsive-grid", delay: 1000 },
-            { output: "🚀 Responsive alignment fixed across all viewports. Desktop, tablet, and mobile configurations active.", delay: 1300 }
-        ];
+        // --- STAGE 1: BOOT SEQUENCE EXECUTION ENGINE ---
+        let currentLogIndex = 0;
+        function renderBootSequence() {
+            if (currentLogIndex < bootLogs.length) {
+                bootLogger.innerHTML += `<div>> ${bootLogs[currentLogIndex]}</div>`;
+                currentLogIndex++;
+                setTimeout(renderBootSequence, 350);
+            } else {
+                bootLogger.innerHTML += `<div><span class="boot-cursor"></span></div>`;
+                setTimeout(() => {
+                    bootScreen.style.opacity = '0';
+                    setTimeout(() => {
+                        bootScreen.style.display = 'none';
+                        displayAuthScreen('login');
+                    }, 500);
+                }, 1000);
+            }
+        }
+
+        // --- STAGE 2: AUTHENTICATION RENDER ENGINE ---
+        function displayAuthScreen(mode = 'login') {
+            authScreen.style.display = 'flex';
+            
+            if (mode === 'login') {
+                authCardPayload.innerHTML = `
+                    <div class="auth-header">
+                        <h2>Welcome to <span>ASK-NOVA</span></h2>
+                        <p>Enter your authorization parameters to log in</p>
+                    </div>
+                    <form class="auth-form" onsubmit="handleAuthSubmit(event, 'login')">
+                        <div class="input-group">
+                            <label>Registered Identifier (Email)</label>
+                            <input type="email" class="auth-input" required placeholder="name@domain.com">
+                        </div>
+                        <div class="input-group">
+                            <label>Security Keyphrase (Password)</label>
+                            <input type="password" class="auth-input" required placeholder="••••••••">
+                        </div>
+                        <button type="submit" class="auth-submit-btn">Validate Authentication</button>
+                    </form>
+                    <div class="auth-toggle-link">
+                        New system operator? <span onclick="displayAuthScreen('signup')">Create Framework Profile</span>
+                    </div>
+                `;
+            } else {
+                authCardPayload.innerHTML = `
+                    <div class="auth-header">
+                        <h2>Initialize <span>Profile</span></h2>
+                        <p>Register a new operator node inside the database</p>
+                    </div>
+                    <form class="auth-form" onsubmit="handleAuthSubmit(event, 'signup')">
+                        <div class="input-group">
+                            <label>Operator Handle (Full Name)</label>
+                            <input type="text" class="auth-input" required placeholder="Pratham Dada">
+                        </div>
+                        <div class="input-group">
+                            <label>System Identifier (Email Address)</label>
+                            <input type="email" class="auth-input" required placeholder="name@domain.com">
+                        </div>
+                        <div class="input-group">
+                            <label>Generate Security Keyphrase</label>
+                            <input type="password" class="auth-input" required placeholder="••••••••">
+                        </div>
+                        <button type="submit" class="auth-submit-btn">Register Node Credentials</button>
+                    </form>
+                    <div class="auth-toggle-link">
+                        Already mapped natively? <span onclick="displayAuthScreen('login')">Return to Authentication</span>
+                    </div>
+                `;
+            }
+        }
+
+        function handleAuthSubmit(event, mode) {
+            event.preventDefault();
+            
+            // Fast visual transition mock to unmount security gates safely
+            authScreen.style.opacity = '0';
+            setTimeout(() => {
+                authScreen.style.display = 'none';
+                launchDashboardWorkspace();
+            }, 400);
+        }
+
+        // --- STAGE 3: APPLICATION SYSTEM WORKSPACE MOUNTING ---
+        function launchDashboardWorkspace() {
+            dashboardWorkspace.style.display = 'block';
+            setTimeout(() => {
+                dashboardWorkspace.style.opacity = '1';
+                initializeTerminalDiagnostics();
+            }, 50);
+        }
+
+        function switchCompilerLanguage() {
+            const selectedLang = document.getElementById('lang-switcher').value;
+            if (compilerURLs[selectedLang]) {
+                compilerFrame.src = compilerURLs[selectedLang];
+                appendTerminalLine(`compiler --switch-runtime "${selectedLang.toUpperCase()}"`, true);
+            }
+        }
 
         function appendTerminalLine(text, isCommand = false) {
             const line = document.createElement('div');
@@ -755,15 +855,24 @@
             historyContainer.scrollTop = historyContainer.scrollHeight;
         }
 
-        scriptSequence.forEach(step => {
-            setTimeout(() => {
-                if (step.cmd) {
-                    appendTerminalLine(step.cmd, true);
-                } else if (step.output) {
-                    appendTerminalLine(step.output, false);
-                }
-            }, step.delay);
-        });
+        function initializeTerminalDiagnostics() {
+            const scriptSequence = [
+                { cmd: "initialize ask-nova --core", delay: 200 },
+                { output: "⚙ Booting Nova Agent Kernel Core v2.4.1...", delay: 500 },
+                { cmd: "ask-nova --load-responsive-grid", delay: 900 },
+                { output: "🚀 Responsive alignment fixed across all viewports. Desktop, tablet, and mobile configurations active.", delay: 1200 }
+            ];
+
+            scriptSequence.forEach(step => {
+                setTimeout(() => {
+                    if (step.cmd) {
+                        appendTerminalLine(step.cmd, true);
+                    } else if (step.output) {
+                        appendTerminalLine(step.output, false);
+                    }
+                }, step.delay);
+            });
+        }
 
         function executeSearchQuery() {
             const query = searchField.value.trim().toLowerCase();
@@ -782,11 +891,17 @@
             searchField.value = '';
         }
 
+        // Global Dynamic Event Triggers
         searchActionBtn.addEventListener('click', executeSearchQuery);
         searchField.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 executeSearchQuery();
             }
+        });
+
+        // Initialize App Runtime Loop
+        window.addEventListener('DOMContentLoaded', () => {
+            renderBootSequence();
         });
     </script>
 </body>
