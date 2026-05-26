@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOVA // Project Repository & Work Details</title>
+    <style>
+        :root {
+            --bg-color: #030712;
+            --text-color: #f3f4f6;
+            --text-muted: #9ca3af;
+            --accent-color: #6366f1;
+            --accent-glow: rgba(99, 102, 241, 0.3);
+            --card-bg: #1f2937;
+            --border-color: #374151;
+            --terminal-bg: #111827;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        /* --- GLOBAL NAVIGATION SUBMENU BAR --- */
+        .system-nav-header {
+            background: #0f172a;
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(12px);
+        }
+
+        .nav-brand {
+            font-weight: 800;
+            font-size: 1.2rem;
+            letter-spacing: -0.5px;
+            color: #fff;
+        }
+
+        .nav-brand span {
+            color: var(--accent-color);
+        }
+
+        .nav-folders {
+            display: flex;
+            gap: 20px;
+        }
+
+        .folder-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .folder-link:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .folder-link.active {
+            color: #fff;
+            background: rgba(99, 102, 241, 0.15);
+            border-color: rgba(99, 102, 241, 0.4);
+        }
+
+        /* --- MAIN SECTION LAYOUTS --- */
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header h1 span {
+            background: linear-gradient(135deg, #a5b4fc 0%, var(--accent-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .page-header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        /* --- ACTIVE DEPLOYMENTS SECTION --- */
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 20px;
+            background: var(--accent-color);
+            border-radius: 2px;
+        }
+
+        .project-matrix-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .project-terminal-card {
+            background: var(--terminal-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .project-terminal-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-color);
+        }
+
+        .card-topbar {
+            background: #1f2937;
+            padding: 0.65rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .card-dots { display: flex; gap: 6px; }
+        .card-dot { width: 10px; height: 10px; border-radius: 50%; background: #374151; }
+        .project-terminal-card:hover .card-dot:nth-child(1) { background: #ef4444; }
+        .project-terminal-card:hover .card-dot:nth-child(2) { background: #f59e0b; }
+        .project-terminal-card:hover .card-dot:nth-child(3) { background: #10b981; }
+
+        .card-tag {
+            font-family: monospace;
+            font-size: 0.75rem;
+            color: #a5b4fc;
+            background: rgba(99, 102, 241, 0.15);
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-content h3 {
+            font-size: 1.25rem;
+            color: #fff;
+            margin-bottom: 0.75rem;
+        }
+
+        .card-content p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            flex: 1;
+        }
+
+        .project-meta-info {
+            background: rgba(3, 7, 18, 0.4);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-size: 0.8rem;
+        }
+
+        .meta-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.25rem;
+        }
+        .meta-row:last-child { margin-bottom: 0; }
+        .meta-label { color: var(--text-muted); font-family: monospace; }
+        .meta-value { color: #34d399; font-weight: 600; }
+
+        .action-link-btn {
+            background: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            padding: 0.65rem;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .action-link-btn:hover {
+            background: #4f46e5;
+        }
+
+        /* --- BRAND MARKETING ARCHIVES --- */
+        .marketing-archive-box {
+            background: rgba(31, 41, 55, 0.2);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .archive-table-wrapper {
+            overflow-x: auto;
+        }
+
+        .archive-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        .archive-table th {
+            padding: 1rem;
+            border-bottom: 2px solid var(--border-color);
+            color: #fff;
+            font-family: monospace;
+        }
+
+        .archive-table td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            color: var(--text-muted);
+        }
+
+        .archive-table tr:hover td {
+            color: #fff;
+            background: rgba(255,255,255,0.01);
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            font-family: monospace;
+        }
+        .status-active { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+        .status-pending { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+
+        footer {
+            text-align: center;
+            padding: 4rem 1.5rem 2rem 1.5rem;
+            color: #4b5563;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255,255,255,0.02);
+        }
+
+        @media (max-width: 600px) {
+            .system-nav-header { flex-direction: column; gap: 15px; padding: 1rem; }
+            .project-matrix-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SYSTEM GLOBAL NAVIGATION BAR -->
+    <header class="system-nav-header">
+        <div class="nav-brand">NOVA//<span>WORKSPACE</span></div>
+        <nav class="nav-folders">
+            <a href="index.html" class="folder-link">
+                📁 Core_Agent.sh
+            </a>
+            <a href="projects.html" class="folder-link active">
+                📁 Work_Directory/
+            </a>
+        </nav>
+    </header>
+
+    <main class="container">
+        
+        <div class="page-header">
+            <h1>Engineered <span>Deployments & Portfolios</span></h1>
+            <p>A granular catalog of operational web hubs, production source assets, and commercial client materials.</p>
+        </div>
+
+        <!-- SECTION 1: LIVE CODE BASES -->
+        <h2 class="section-title">Production Web Environments</h2>
+        <div class="project-matrix-grid">
+            
+            <!-- Project 1: Digital Book Portal -->
+            <div class="project-terminal-card">
+                <div class="card-topbar">
+                    <div class="card-dots"><span class="card-dot"></span><span class="card-dot"></span><span class="card-dot"></span></div>
+                    <span class="card-tag">WEB-UI // DEPLOYED</span>
+                </div>
+                <div class="card-content">
+                    <h3>prathamdadakibook.in</h3>
+                    <p>A customized digital textbook gateway and document server designed to distribute clean programmatic educational blueprints to computer student networks.</p>
+                    <div class="project-meta-info">
+                        <div class="meta-row"><span class="meta-label">Stack:</span><span class="meta-value">HTML5 / Vanilla CSS / JS</span></div>
+                        <div class="meta-row"><span class="meta-label">Status:</span><span class="meta-value">Operational</span></div>
+                    </div>
+                    <a href="http://prathamdadakibook.in" target="_blank" class="action-link-btn">Launch Live Domain ↗</a>
+                </div>
+            </div>
+
+            <!-- Project 2: Resource Platform -->
+            <div class="project-terminal-card">
+                <div class="card-topbar">
+                    <div class="card-dots"><span class="card-dot"></span><span class="card-dot"></span><span class="card-dot"></span></div>
+                    <span class="card-tag">APP-HUB // DEPLOYED</span>
+                </div>
+                <div class="card-content">
+                    <h3>BCA Digital Resource Gateway</h3>
+                    <p>An integrated, structured navigation dashboard consolidating web layout compilers and complete repository indexes for easy access to programming fundamentals.</p>
+                    <div class="project-meta-info">
+                        <div class="meta-row"><span class="meta-label">Stack:</span><span class="meta-value">Dynamic DOM System</span></div>
+                        <div class="meta-row"><span class="meta-label">Status:</span><span class="meta-value">Active</span></div>
+                    </div>
+                    <a href="index.html" class="action-link-btn">Return to Terminal Console</a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- SECTION 2: MARKETING & MEDIA PRODUCTION LOGS -->
+        <h2 class="section-title">Digital Marketing & Specialized Brand Assets</h2>
+        <div class="marketing-archive-box">
+            <div class="archive-table-wrapper">
+                <table class="archive-table">
+                    <thead>
+                        <tr>
+                            <th>Asset ID</th>
+                            <th>Target Entity / Associate</th>
+                            <th>Production Scope</th>
+                            <th>Deployment Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#DS-TL01</td>
+                            <td>Tally Learn Program</td>
+                            <td>Promotional Advertisement Graphic Asset Sets</td>
+                            <td><span class="status-badge status-active">COMPLETED</span></td>
+                        </tr>
+                        <tr>
+                            <td>#MS-AVV02</td>
+                            <td>Aacharaya Vikash Vashishth</td>
+                            <td>Commercial Media Layouts & Promotional Script Systems</td>
+                            <td><span class="status-badge status-active">OPERATIONAL</span></td>
+                        </tr>
+                        <tr>
+                            <td>#AN-UX03</td>
+                            <td>ASK-NOVA UI Widget</td>
+                            <td>Interactive Animated Bunny Support Chat Gateway Element</td>
+                            <td><span class="status-badge status-active">PRODUCTION READY</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Core Portfolio Directory. Crafted and conceptualized by Pratham Dada.</p>
+    </footer>
+
+</body>
+</html>
